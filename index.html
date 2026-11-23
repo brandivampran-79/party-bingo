@@ -1,89 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>90s–Current Urban Culture Bingo | 30-Card Suite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Party Ears: 90s–Current Urban Culture Bingo (Dual QR Mobile Suite)</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- QR Code Generator Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Inter & Archivo Black -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background-color: #09090b;
+      color: #fafafa;
     }
 
     .font-flyer-title {
       font-family: 'Archivo Black', sans-serif;
+      letter-spacing: -0.03em;
     }
 
-    .font-graffiti {
-      font-family: 'Permanent Marker', cursive;
-    }
-
-    /* 90s Distressed Flyer Grain & Memphis Pattern Background */
+    /* 90s Retro R&B/Hip-Hop Flyer Aesthetic */
     .retro-flyer-bg {
-      background-color: #09090b;
+      background-color: #111115;
       background-image:
-        radial-gradient(circle at 15% 15%, rgba(217, 70, 239, 0.22) 0%, transparent 40%),
-        radial-gradient(circle at 85% 20%, rgba(6, 182, 212, 0.22) 0%, transparent 40%),
-        radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 12% 14%, rgba(236, 72, 153, 0.24) 0%, transparent 42%),
+        radial-gradient(circle at 88% 18%, rgba(34, 211, 238, 0.22) 0%, transparent 42%),
+        radial-gradient(circle at 50% 88%, rgba(168, 85, 247, 0.22) 0%, transparent 48%),
         repeating-linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.02) 0px,
-          rgba(255, 255, 255, 0.02) 1px,
-          transparent 1px,
-          transparent 3px
+          -45deg,
+          rgba(255, 255, 255, 0.015) 0px,
+          rgba(255, 255, 255, 0.015) 2px,
+          transparent 2px,
+          transparent 6px
         );
     }
 
-    /* Custom Print Styling for Clean 1-Card-Per-Page PDF Export */
+    /* Print Layout Rules for 30 Individual Bingo Cards */
     @media print {
       body {
-        background: white !important;
-        color: black !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+        background: #ffffff !important;
+        color: #000000 !important;
       }
       .no-print {
         display: none !important;
+      }
+      .print-grid {
+        display: block !important;
       }
       .bingo-card-sheet {
         page-break-after: always;
         break-after: page;
         box-shadow: none !important;
-        margin: 0 auto !important;
-        width: 100% !important;
-        max-width: 7.4in !important;
-        padding: 0.3in !important;
+        border: 3px solid #18181b !important;
+        margin: 0 auto 1rem auto !important;
+        max-width: 100% !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
       .bingo-card-sheet:last-child {
         page-break-after: auto;
         break-after: auto;
       }
     }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #18181b;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #3f3f46;
-      border-radius: 9999px;
-    }
   </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen antialiased selection:bg-amber-400 selection:text-zinc-950">
+<body class="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-fuchsia-500 selection:text-white">
 
-  <!-- Top Navigation Bar (Hidden when printing) -->
-  <header class="no-print sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800">
+  <!-- Top Navigation Bar (Hidden when printing or in Guest Mobile Lock Mode) -->
+  <header id="main-header" class="no-print sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500 via-amber-400 to-cyan-400 flex items-center justify-center text-zinc-950 font-black text-xl shadow-lg shadow-fuchsia-500/20">
@@ -93,21 +83,24 @@
           <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
             PARTY EARS: 90s–NOW BINGO
           </h1>
-          <p class="text-xs text-zinc-400">Hear the Artist on the Playlist or Overhear the Phrase • 30 Cards</p>
+          <p class="text-xs text-zinc-400">Dual QR Mobile Suite • Host Tracker + Guest Random Cards</p>
         </div>
       </div>
 
       <!-- Mode Switcher Tabs -->
-      <div class="flex items-center bg-zinc-950 p-1.5 rounded-xl border border-zinc-800 w-full sm:w-auto justify-center">
-        <button id="tab-cards" onclick="switchTab('cards')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-amber-400 text-zinc-950 shadow">
-          30 Cards
-        </button>
-        <button id="tab-qr" onclick="switchTab('qr')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white flex items-center justify-center gap-1.5">
-          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-          QR & Mobile Play
+      <div class="flex flex-wrap items-center bg-zinc-950 p-1.5 rounded-xl border border-zinc-800 w-full sm:w-auto justify-center gap-1">
+        <button id="tab-qr" onclick="switchTab('qr')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-amber-400 text-zinc-950 shadow flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+          2 QR Codes & Mobile
         </button>
         <button id="tab-caller" onclick="switchTab('caller')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
           Host Tracker
+        </button>
+        <button id="tab-cards" onclick="switchTab('cards')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
+          30 Cards
+        </button>
+        <button id="tab-playlist" onclick="switchTab('playlist')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
+          ♫ Party Playlist
         </button>
       </div>
     </div>
@@ -124,165 +117,195 @@
   <!-- ========================================================= -->
   <!-- VIEW 1: 30 PLAYER CARDS & PRINT GENERATOR                  -->
   <!-- ========================================================= -->
-  <main id="view-cards" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    
-    <!-- Controls Toolbar (Hidden on print) -->
-    <div class="no-print bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-5 mb-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-xl">
+  <main id="view-cards" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="no-print bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col lg:flex-row items-center justify-between gap-4">
       <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-        <div>
-          <label for="card-filter" class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">View / Filter Cards</label>
-          <select id="card-filter" onchange="renderCards()" class="bg-zinc-950 border border-zinc-700 text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500">
-            <option value="all">Show All 30 Cards (Print Ready)</option>
-            <!-- Individual card options populated by JS -->
-          </select>
-        </div>
+        <label for="card-filter" class="text-xs font-bold uppercase tracking-wider text-zinc-400">Filter View:</label>
+        <select id="card-filter" onchange="renderCards()" class="bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+          <option value="all">All 30 Variations (Cards #01–#30)</option>
+        </select>
 
-        <div>
-          <label for="era-badge-toggle" class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Square Labels</label>
-          <select id="era-badge-toggle" onchange="renderCards()" class="bg-zinc-950 border border-zinc-700 text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500">
-            <option value="show">Show Type (PLAYLIST vs OVERHEARD)</option>
-            <option value="hide">Clean Retro Flyer Look Only</option>
-          </select>
-        </div>
+        <button onclick="regenerateDeck()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs sm:text-sm font-semibold transition border border-zinc-700">
+          ↻ Reshuffle Deck
+        </button>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
-        <button onclick="regenerateDeck()" class="px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-semibold border border-zinc-700 transition flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-          Shuffle New 30-Card Set
-        </button>
-
-        <button onclick="printAllCards()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 text-sm font-black shadow-lg shadow-fuchsia-500/20 transition flex items-center gap-2">
+      <div class="flex items-center gap-3 w-full lg:w-auto justify-end">
+        <button onclick="printAllCards()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 font-black text-sm shadow-lg transition flex items-center justify-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
           Print / Save All 30 Cards (PDF)
         </button>
       </div>
     </div>
 
-    <!-- Instructions Banner (Hidden on print) -->
-    <div class="no-print bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm text-fuchsia-100">
-      <div>
-        <span class="font-bold text-amber-400">How Arrival Bingo Works:</span> Hand each guest a card & pen at the door. Whenever a song by a listed <strong>Artist</strong> plays on the speaker OR someone in the room says one of the <strong>Overheard Phrases</strong>, they mark that square!
-      </div>
-      <span class="text-xs font-mono bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800 text-cyan-300 shrink-0">
-        <strong id="pool-count">60</strong> Playlist & Party Prompts
-      </span>
-    </div>
-
-    <!-- Grid Container for All 30 Cards -->
-    <div id="cards-container" class="grid grid-cols-1 lg:grid-cols-2 gap-8 print:block">
-      <!-- Cards dynamically injected here -->
+    <!-- Container for the 30 Generated Cards -->
+    <div id="cards-container" class="print-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Cards populated via JavaScript -->
     </div>
   </main>
 
   <!-- ========================================================= -->
-  <!-- VIEW 2: QR CODE DISPLAY & MOBILE PHONE PLAYER MODE        -->
+  <!-- VIEW 2: DUAL QR CODES (HOST VS GUEST) & MOBILE PLAYER     -->
   <!-- ========================================================= -->
-  <main id="view-qr" class="hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main id="view-qr" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     
-    <!-- Top Section: Scannable QR Code Card (Great for TV Cast or Printing Table Tent) -->
+    <!-- Top Section: Dual QR Code Hub (Hidden when a Guest scans in via ?mode=guest) -->
     <div id="qr-share-panel" class="no-print bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 mb-8 shadow-2xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <div class="text-center max-w-2xl mx-auto mb-6">
+        <span class="inline-block px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 text-xs font-bold uppercase tracking-wider mb-2">
+          100% Mobile Party Setup
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">
+          Two Dedicated QR Codes: Host vs. Guests
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-400 mt-1">
+          Scan the <strong>Host QR</strong> on your phone to unlock the full Tracker & Verifier. Display the <strong>Guest QR</strong> for party guests—scanning it immediately deals them a random card with mobile daubing and a Call BINGO button.
+        </p>
+      </div>
+
+      <!-- Base URL Configuration Bar -->
+      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 mb-6">
+        <label for="custom-qr-url" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5">
+          Your Live GitHub Pages / Hosted Link (Auto-detected)
+        </label>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input
+            type="text"
+            id="custom-qr-url"
+            oninput="updateQRCodeFromInput()"
+            placeholder="https://yourusername.github.io/party-bingo/"
+            class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-cyan-300 font-mono focus:outline-none focus:border-amber-400"
+          />
+          <button
+            type="button"
+            onclick="copyGuestLink()"
+            class="px-4 py-2 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-black transition shrink-0"
+          >
+            Copy Guest Link
+          </button>
+          <button
+            type="button"
+            onclick="copyHostLink()"
+            class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-black transition shrink-0"
+          >
+            Copy Host Link
+          </button>
+        </div>
+        <p id="qr-preview-warning" class="hidden text-[11px] text-amber-300/90 mt-2">
+          Note: You are currently viewing inside an editor preview. Open your GitHub Pages link and both QR codes will automatically update to your live site!
+        </p>
+      </div>
+
+      <!-- Side-by-Side QR Code Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <!-- Left: Live Generated QR Code -->
-        <div class="md:col-span-5 flex flex-col items-center">
-          <div class="bg-white p-4 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.25)] border-4 border-amber-400">
-            <div id="qrcode-canvas" class="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center"></div>
-          </div>
-          <span class="mt-3 text-xs font-extrabold uppercase tracking-widest text-cyan-400">
-            Scan With Phone Camera
+        <!-- QR 1: GUEST QR CODE -->
+        <div class="bg-zinc-950 border-2 border-cyan-500/40 rounded-2xl p-6 flex flex-col items-center text-center shadow-lg">
+          <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black uppercase tracking-widest mb-3">
+            1. Guest QR Code (For Everyone)
           </span>
-        </div>
-
-        <!-- Right: Host Instructions & Custom URL Option -->
-        <div class="md:col-span-7 space-y-4">
-          <div class="inline-block px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 text-xs font-bold uppercase tracking-wider">
-            Paperless Phone Mode
+          <div class="bg-white p-3.5 rounded-2xl border-4 border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.25)]">
+            <div id="qrcode-guest-canvas" class="w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center"></div>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
-            Scan to Grab Your Card & Daub on Your Phone!
-          </h2>
-          <p class="text-sm text-zinc-300 leading-relaxed">
-            Display this QR code on your TV or print it out for the welcome table. When guests scan it, they can tap <strong>"Get My Random Card"</strong> (or pick Card #01–#30) and tap squares right on their phone screen!
+          <h3 class="text-base font-extrabold text-white mt-4">Deals a Random Card on Phone</h3>
+          <p class="text-xs text-zinc-400 mt-1 max-w-xs">
+            Opens straight to a clean mobile Bingo card (no host controls). Guests tap squares to daub and hit <strong>CALL BINGO!</strong> when they get 5 in a row.
           </p>
-
-          <!-- Optional Hosted Link Input (In case user hosts the HTML file on a link) -->
-          <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2.5">
-            <label for="custom-qr-url" class="block text-xs font-bold uppercase tracking-wider text-zinc-400">
-              QR Destination Link (Auto-detected or paste your hosted URL)
-            </label>
-            <div class="flex flex-col sm:flex-row gap-2">
-              <input
-                type="text"
-                id="custom-qr-url"
-                oninput="updateQRCodeFromInput()"
-                placeholder="https://your-party-link.com"
-                class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-cyan-300 font-mono focus:outline-none focus:border-amber-400"
-              />
-              <button
-                type="button"
-                onclick="copyPartyLink()"
-                class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-black transition shrink-0"
-              >
-                Copy Link
-              </button>
-            </div>
-            <p id="qr-preview-warning" class="hidden text-[11px] text-amber-300/90">
-              Note: You are currently viewing inside an editor preview. When you open or host this HTML file, the QR code automatically encodes that live web address!
-            </p>
-          </div>
+          <a id="test-guest-link" href="?mode=guest" class="mt-3 text-xs font-bold text-cyan-400 hover:text-cyan-300 underline">
+            Preview Guest Phone Screen →
+          </a>
         </div>
+
+        <!-- QR 2: HOST QR CODE -->
+        <div class="bg-zinc-950 border-2 border-amber-500/40 rounded-2xl p-6 flex flex-col items-center text-center shadow-lg">
+          <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-widest mb-3">
+            2. Host QR Code (Just For You)
+          </span>
+          <div class="bg-white p-3.5 rounded-2xl border-4 border-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.25)]">
+            <div id="qrcode-host-canvas" class="w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center"></div>
+          </div>
+          <h3 class="text-base font-extrabold text-white mt-4">Full Host Tracker & Verifier</h3>
+          <p class="text-xs text-zinc-400 mt-1 max-w-xs">
+            Scan with your phone to log songs & room phrases as they happen, verify winning Card #s, view all 30 cards, and check the party playlist.
+          </p>
+          <a id="test-host-link" href="?mode=host" class="mt-3 text-xs font-bold text-amber-400 hover:text-amber-300 underline">
+            Open Host Mobile Tracker →
+          </a>
+        </div>
+
       </div>
     </div>
 
-    <!-- Bottom Section: Guest Phone Card Picker & Active Mobile Card -->
-    <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-5 sm:p-8 shadow-2xl">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-zinc-800">
+    <!-- Bottom Section: Clean Mobile Player Screen (What Guests See Upon Scanning) -->
+    <div id="guest-mobile-container" class="bg-zinc-900/95 border border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-2xl max-w-lg mx-auto">
+      
+      <!-- Guest Mobile Top Bar -->
+      <div class="flex items-center justify-between gap-2 pb-4 mb-4 border-b border-zinc-800">
         <div>
-          <h3 class="text-xl font-black text-white">Guest Mobile Card Selector</h3>
-          <p class="text-xs sm:text-sm text-zinc-400">Pick your assigned card number below or tap for a random card.</p>
+          <span class="text-[10px] font-black uppercase tracking-widest text-cyan-400 block">90s–Current Party Bingo</span>
+          <h3 class="text-lg font-black text-white">Your Mobile Card</h3>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5">
+        <div class="flex items-center gap-2">
           <button
             type="button"
-            onclick="assignRandomMobileCard()"
-            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-fuchsia-500 text-zinc-950 font-black text-xs sm:text-sm shadow-lg transition hover:opacity-95"
+            onclick="assignRandomMobileCard(true)"
+            class="px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-bold text-xs transition"
           >
-            🎲 Get My Random Card
+            🎲 New Random Card
           </button>
+        </div>
+      </div>
 
-          <select
-            id="mobile-card-select"
-            onchange="selectMobileCard(parseInt(this.value, 10))"
-            class="bg-zinc-950 border border-zinc-700 text-white text-xs sm:text-sm font-bold rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-400"
+      <!-- Full-Screen Mobile BINGO! Celebration Overlay Modal (Triggered when Guest taps CALL BINGO) -->
+      <div id="guest-call-bingo-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="retro-flyer-bg border-4 border-amber-400 rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(251,191,36,0.45)]">
+          <div class="inline-block px-3 py-1 rounded-full bg-emerald-500 text-zinc-950 font-black text-xs uppercase tracking-widest mb-3 animate-bounce">
+            5-IN-A-ROW VERIFIED ON CARD
+          </div>
+          <h2 class="font-flyer-title text-4xl sm:text-5xl text-amber-400 tracking-tight mb-2">
+            BINGO!
+          </h2>
+          <p class="text-sm text-zinc-200 mb-4">
+            Hold your phone up and show the host your winning card number:
+          </p>
+          <div class="bg-zinc-950 border-2 border-cyan-400 rounded-2xl py-4 px-6 mb-6">
+            <span class="text-xs uppercase tracking-widest text-cyan-300 font-bold block">Winning Card Number</span>
+            <span id="modal-bingo-card-number" class="font-flyer-title text-5xl text-white">#01</span>
+          </div>
+          <button
+            type="button"
+            onclick="closeCallBingoModal()"
+            class="w-full py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-black text-sm transition"
           >
-            <!-- Populated by JS -->
-          </select>
+            Back to My Card
+          </button>
         </div>
       </div>
 
-      <!-- Quick 1-30 Number Pill Grid for Fast Mobile Selection -->
-      <div class="mb-6">
-        <span class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Or Tap Your Card Number (01–30):</span>
-        <div id="mobile-card-pills" class="grid grid-cols-6 sm:grid-cols-10 gap-1.5">
-          <!-- 1-30 buttons populated by JS -->
-        </div>
-      </div>
-
-      <!-- Live Mobile Bingo Banner (Celebrates when player hits 5-in-a-row on their phone!) -->
-      <div id="mobile-bingo-alert" class="hidden mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-amber-400/20 to-fuchsia-500/20 border-2 border-amber-400 text-center animate-pulse">
-        <p class="text-lg sm:text-xl font-black text-amber-300 tracking-wide">
-          🎉 BINGO! YOU GOT 5 IN A ROW! 🎉
-        </p>
-        <p class="text-xs text-zinc-200 mt-1">
-          Shout <strong>"BINGO!"</strong> and show Card #<span id="mobile-win-card-num">01</span> to the host!
+      <!-- Inline Live Status Banner when 5-in-a-row is reached -->
+      <div id="mobile-bingo-alert" class="hidden mb-4 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/25 via-amber-400/25 to-fuchsia-500/25 border-2 border-amber-400 text-center">
+        <p class="text-sm sm:text-base font-black text-amber-300">
+          🔥 YOU HAVE 5 IN A ROW! TAP "CALL BINGO!" BELOW! 🔥
         </p>
       </div>
 
       <!-- Single Large Touch-Optimized Mobile Card Container -->
-      <div id="mobile-active-card-container" class="max-w-xl mx-auto">
+      <div id="mobile-active-card-container">
         <!-- Active mobile card renders here -->
+      </div>
+
+      <!-- Big Mobile "CALL BINGO!" Action Button -->
+      <div class="mt-5">
+        <button
+          id="call-bingo-btn"
+          type="button"
+          onclick="triggerCallBingo()"
+          class="w-full py-4 px-6 rounded-2xl bg-zinc-800 border-2 border-zinc-700 text-zinc-400 font-black text-base sm:text-lg tracking-wide transition-all shadow-lg flex items-center justify-center gap-2"
+        >
+          <span>📣</span>
+          <span id="call-bingo-btn-label">Mark 5 in a Row to Call BINGO!</span>
+        </button>
       </div>
     </div>
   </main>
@@ -293,177 +316,188 @@
   <main id="view-caller" class="hidden no-print max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
-      <!-- Left Column: Live Draw Stage & Verifier -->
+      <!-- Left Column: Host Mobile Controls & Winner Verifier -->
       <div class="lg:col-span-5 space-y-6">
         
-        <!-- Active Draw Spotlight Card -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl text-center relative overflow-hidden">
-          <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500"></div>
-          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-800 text-amber-400 mb-4">
-            Current Call (<span id="called-counter">0</span> / 60)
-          </span>
-
-          <div id="current-call-box" class="min-h-[160px] flex flex-col items-center justify-center p-4 rounded-2xl bg-zinc-950 border border-zinc-800 mb-6">
-            <p class="text-zinc-500 text-sm font-medium">Press "Draw Next Culture Item" to start the game!</p>
+        <!-- Quick Host Guide & Random Draw -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Host Mobile Tracker</span>
+            <span id="called-counter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300">0 / 60 Logged</span>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button onclick="drawNextItem()" class="flex-1 py-3.5 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-black text-base shadow-lg shadow-amber-500/20 transition active:scale-[0.99]">
-              Random Spotlight Prompt
-            </button>
-            <button onclick="confirmResetCaller()" class="py-3.5 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-sm border border-zinc-700 transition">
-              Reset Tracker
-            </button>
+          <div id="current-call-display" class="min-h-[120px] rounded-xl bg-zinc-950 border border-zinc-800 p-4 flex flex-col items-center justify-center text-center mb-4">
+            <span class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold mb-1">Tap Any Tile on the Board to Log It</span>
+            <h2 class="text-lg sm:text-xl font-black text-white">Track Songs & Overheard Phrases</h2>
+            <p class="text-xs text-zinc-400 mt-1">Auto-saved to your phone • Or draw a random prompt below</p>
           </div>
 
-          <!-- Inline Reset Confirmation -->
-          <div id="reset-confirm-bar" class="hidden mt-4 p-3 rounded-xl bg-rose-950/60 border border-rose-500/40 flex items-center justify-between gap-2">
-            <span class="text-xs text-rose-200 font-medium">Clear all called items?</span>
-            <div class="flex gap-2">
-              <button onclick="resetCaller()" class="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold">Yes, Clear</button>
-              <button onclick="cancelResetCaller()" class="px-3 py-1 rounded-lg bg-zinc-800 text-zinc-300 text-xs font-semibold">Cancel</button>
-            </div>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="drawNextItem()" class="py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 font-black text-xs sm:text-sm shadow-lg transition">
+              🎲 Random Draw
+            </button>
+            <button onclick="resetCallerBoard()" class="py-3 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm border border-zinc-700 transition">
+              Reset Log
+            </button>
           </div>
         </div>
 
-        <!-- Card Checker / Bingo Verifier -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl">
-          <h2 class="text-base font-extrabold text-white mb-1 flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            Verify a Player's "BINGO!"
-          </h2>
-          <p class="text-xs text-zinc-400 mb-4">Enter the Card # (1–30) shouted by the winner to verify if their squares have been called.</p>
-
-          <div class="flex gap-2 mb-4">
-            <input type="number" id="verify-card-input" min="1" max="30" placeholder="Card # (1-30)" class="w-36 bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-            <button onclick="verifyPlayerCard()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm rounded-xl px-4 py-2.5 transition">
-              Inspect Card
+        <!-- Winner Card Verifier -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
+          <h3 class="text-sm font-extrabold uppercase tracking-wider text-white mb-1">Verify a Player's "BINGO!"</h3>
+          <p class="text-xs text-zinc-400 mb-3">Enter the player's Card # (1–30) to check their card against your logged songs & phrases.</p>
+          
+          <div class="flex gap-2">
+            <input type="number" id="verify-card-input" min="1" max="30" placeholder="Card # (1-30)" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" />
+            <button onclick="verifyPlayerCard()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition shrink-0">
+              Check
             </button>
           </div>
 
-          <div id="verify-result" class="text-xs text-zinc-400">
-            <!-- Verification mini-card renders here -->
-          </div>
+          <div id="verify-result" class="mt-3 hidden rounded-xl p-3.5 text-xs"></div>
         </div>
 
       </div>
 
-      <!-- Right Column: Master Board of All 60 Cultural Items -->
-      <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-4 border-b border-zinc-800">
+      <!-- Right Column: Searchable & Filterable 60-Square Host Tracker -->
+      <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
-            <h2 class="text-lg font-extrabold text-white">Host Playlist & Room Tracker</h2>
-            <p class="text-xs text-zinc-400">Tap any Artist or Overheard Phrase on your phone/laptop as it happens to log it.</p>
-          </div>
-          <div class="flex items-center gap-3 text-xs shrink-0">
-            <span class="flex items-center gap-1.5 text-zinc-300"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Logged</span>
-            <span class="flex items-center gap-1.5 text-zinc-400"><span class="w-3 h-3 rounded bg-zinc-800 border border-zinc-700 inline-block"></span> Pending</span>
+            <h3 class="text-base font-extrabold text-white">Tap to Mark Songs & Phrases Heard (<span id="pool-count">60</span>)</h3>
+            <p class="text-xs text-zinc-400">Tap any tile when an artist plays or someone says the phrase</p>
           </div>
         </div>
 
-        <!-- Mobile-Friendly Search & Filter Bar for Host -->
+        <!-- Mobile Search & Type Filter Bar -->
         <div class="flex flex-col sm:flex-row gap-2 mb-4">
           <input
             type="text"
             id="host-search-input"
             oninput="renderMasterBoard()"
-            placeholder="Quick search artist or phrase (e.g. 'Potato Salad', 'Usher')..."
-            class="flex-1 bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+            placeholder="🔍 Search artist or phrase (e.g., Potato Salad, Usher)..."
+            class="flex-1 bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
           />
-          <div class="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 shrink-0">
-            <button type="button" id="filter-host-all" onclick="setHostFilter('ALL')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-400 text-zinc-950 transition">
-              All (60)
-            </button>
-            <button type="button" id="filter-host-music" onclick="setHostFilter('PLAYLIST')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition">
-              ♫ Music (36)
-            </button>
-            <button type="button" id="filter-host-overheard" onclick="setHostFilter('OVERHEARD')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition">
-              💬 Room Phrases (24)
-            </button>
+          <div class="flex gap-1.5 shrink-0">
+            <button type="button" id="filter-btn-ALL" onclick="setHostFilter('ALL')" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-400 text-zinc-950">All (60)</button>
+            <button type="button" id="filter-btn-PLAYLIST" onclick="setHostFilter('PLAYLIST')" class="px-3 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-cyan-300">♫ Songs (36)</button>
+            <button type="button" id="filter-btn-OVERHEARD" onclick="setHostFilter('OVERHEARD')" class="px-3 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-fuchsia-300">💬 Phrases (24)</button>
           </div>
         </div>
 
         <div id="master-board-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[620px] overflow-y-auto pr-1">
-          <!-- Master items populated via JS -->
+          <!-- Populated by JS -->
         </div>
       </div>
 
     </div>
   </main>
 
+  <!-- ========================================================= -->
+  <!-- VIEW 4: CURATED 90s–CURRENT R&B & HIP-HOP PARTY PLAYLIST  -->
+  <!-- ========================================================= -->
+  <main id="view-playlist" class="hidden no-print max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-zinc-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-2">
+            Party Soundtrack Blueprint
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">
+            90s, 2000s & Current R&B / Hip-Hop Playlist
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1">
+            Includes every Bingo card artist plus extra crowd-pleasing throwbacks and current hits so the game paces naturally over 2–3 hours.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onclick="copyFullPlaylist()"
+          class="px-5 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 text-zinc-950 font-black text-xs sm:text-sm shadow-lg transition hover:opacity-95 shrink-0"
+        >
+          📋 Copy Full Tracklist
+        </button>
+      </div>
+
+      <!-- 3 Era Columns -->
+      <div id="playlist-columns" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </main>
+
   <script>
     // =========================================================================
-    // 1. CURATED 90s–CURRENT "HEAR IT AT THE PARTY" POOL (60 ITEMS)
-    //    Split into:
-    //    - PLAYLIST ARTISTS (Hear any song by them on the party speakers)
-    //    - OVERHEARD PHRASES / MOMENTS (Hear someone say it or see it happen)
+    // 1. URBAN CULTURE POOL (60 ITEMS: 36 PLAYLIST ARTISTS + 24 ROOM PHRASES)
     // =========================================================================
     const CULTURE_ITEMS = [
-      // 90s–00s R&B & Hip-Hop Playlist Artists (20 items)
-      { id: 1,  title: "Aaliyah", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 2,  title: "Boyz II Men", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 3,  title: "TLC", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 4,  title: "Mary J. Blige", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 5,  title: "Jodeci", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 6,  title: "Toni Braxton", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 7,  title: "Brandy or Monica", type: "PLAYLIST", era: "90s", hint: "Either artist plays" },
-      { id: 8,  title: "Usher", type: "PLAYLIST", era: "90s–00s", hint: "Any song plays" },
-      { id: 9,  title: "SWV or Xscape", type: "PLAYLIST", era: "90s", hint: "Either group plays" },
-      { id: 10, title: "Keith Sweat", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 11, title: "Erykah Badu", type: "PLAYLIST", era: "90s", hint: "Any song plays" },
-      { id: 12, title: "112 or Jagged Edge", type: "PLAYLIST", era: "90s–00s", hint: "Either group plays" },
-      { id: 13, title: "Blackstreet", type: "PLAYLIST", era: "90s", hint: "No Diggity / Any track" },
-      { id: 14, title: "Lauryn Hill", type: "PLAYLIST", era: "90s", hint: "Solo or Fugees track" },
-      { id: 15, title: "Notorious B.I.G.", type: "PLAYLIST", era: "90s", hint: "Any Biggie track plays" },
-      { id: 16, title: "2Pac", type: "PLAYLIST", era: "90s", hint: "Any Pac track plays" },
-      { id: 17, title: "OutKast", type: "PLAYLIST", era: "90s–00s", hint: "Any OutKast track" },
-      { id: 18, title: "Destiny's Child", type: "PLAYLIST", era: "90s–00s", hint: "Any group track" },
-      { id: 19, title: "Ashanti or Ja Rule", type: "PLAYLIST", era: "00s", hint: "Either artist plays" },
-      { id: 20, title: "Alicia Keys", type: "PLAYLIST", era: "00s", hint: "Any song plays" },
+      // --- 90s R&B & Hip-Hop Artists on the Playlist (17) ---
+      { id: 1,  type: "PLAYLIST", era: "90s R&B",     title: "Aaliyah",            clue: "Hear any song by Aaliyah on the party playlist" },
+      { id: 2,  type: "PLAYLIST", era: "90s R&B",     title: "Boyz II Men",        clue: "Hear any song by Boyz II Men playing" },
+      { id: 3,  type: "PLAYLIST", era: "90s R&B",     title: "TLC",                clue: "Hear a TLC track on the speakers" },
+      { id: 4,  type: "PLAYLIST", era: "90s R&B",     title: "Mary J. Blige",      clue: "Hear the Queen of Hip-Hop Soul on the playlist" },
+      { id: 5,  type: "PLAYLIST", era: "90s R&B",     title: "Jodeci",             clue: "Hear a Jodeci slow jam or remix" },
+      { id: 6,  type: "PLAYLIST", era: "90s R&B",     title: "Toni Braxton",       clue: "Hear any Toni Braxton song playing" },
+      { id: 7,  type: "PLAYLIST", era: "90s R&B",     title: "Brandy or Monica",   clue: "Hear Brandy, Monica, or 'The Boy Is Mine'" },
+      { id: 8,  type: "PLAYLIST", era: "90s R&B",     title: "SWV",                clue: "Hear Sisters With Voices (SWV) playing" },
+      { id: 9,  type: "PLAYLIST", era: "90s R&B",     title: "Xscape",             clue: "Hear an Xscape 90s R&B classic" },
+      { id: 10, type: "PLAYLIST", era: "90s R&B",     title: "Keith Sweat",        clue: "Hear Keith Sweat begging on the speakers" },
+      { id: 11, type: "PLAYLIST", era: "90s Neo-Soul",title: "Erykah Badu",        clue: "Hear Erykah Badu on the party playlist" },
+      { id: 12, type: "PLAYLIST", era: "90s R&B",     title: "Blackstreet",        clue: "Hear Blackstreet ('No Diggity' or 'Don't Leave Me')" },
+      { id: 13, type: "PLAYLIST", era: "90s Hip-Hop", title: "Lauryn Hill",        clue: "Hear Ms. Lauryn Hill or Fugees on the playlist" },
+      { id: 14, type: "PLAYLIST", era: "90s Hip-Hop", title: "The Notorious B.I.G.",clue: "Hear Biggie Smalls come through the speakers" },
+      { id: 15, type: "PLAYLIST", era: "90s Hip-Hop", title: "2Pac",               clue: "Hear a 2Pac anthem on the playlist" },
+      { id: 16, type: "PLAYLIST", era: "90s Hip-Hop", title: "OutKast",            clue: "Hear OutKast ('ATLiens', 'Rosa Parks', 'Ms. Jackson')" },
+      { id: 17, type: "PLAYLIST", era: "90s Classic", title: "Maze / Frankie B.",  clue: "Hear 'Before I Let Go' (Original or Homecoming)" },
 
-      // 2000s–Current Playlist Artists (16 items)
-      { id: 21, title: "Beyoncé", type: "PLAYLIST", era: "00s–Now", hint: "Solo track plays" },
-      { id: 22, title: "Chris Brown", type: "PLAYLIST", era: "00s–Now", hint: "Any song plays" },
-      { id: 23, title: "Rihanna", type: "PLAYLIST", era: "00s–Now", hint: "Any song plays" },
-      { id: 24, title: "Lil Wayne", type: "PLAYLIST", era: "00s–Now", hint: "Solo or feature" },
-      { id: 25, title: "Drake", type: "PLAYLIST", era: "10s–Now", hint: "Any song plays" },
-      { id: 26, title: "Kendrick Lamar", type: "PLAYLIST", era: "10s–Now", hint: "Any song plays" },
-      { id: 27, title: "SZA", type: "PLAYLIST", era: "Current", hint: "Any song plays" },
-      { id: 28, title: "Bruno Mars", type: "PLAYLIST", era: "10s–Now", hint: "Solo or Silk Sonic" },
-      { id: 29, title: "T-Pain", type: "PLAYLIST", era: "00s", hint: "Solo or feature" },
-      { id: 30, title: "Ne-Yo or Trey Songz", type: "PLAYLIST", era: "00s", hint: "Either artist plays" },
-      { id: 31, title: "Nelly", type: "PLAYLIST", era: "00s", hint: "Any Nelly track plays" },
-      { id: 32, title: "50 Cent", type: "PLAYLIST", era: "00s", hint: "Any 50 Cent track" },
-      { id: 33, title: "Kanye West", type: "PLAYLIST", era: "00s–10s", hint: "Any song plays" },
-      { id: 34, title: "Jay-Z", type: "PLAYLIST", era: "90s–Now", hint: "Solo or feature" },
-      { id: 35, title: "Frank Ocean / Daniel Caesar", type: "PLAYLIST", era: "10s–Now", hint: "Either artist plays" },
-      { id: 36, title: "Maze / Before I Let Go", type: "PLAYLIST", era: "All Eras", hint: "Original or Bey version" },
+      // --- 2000s R&B & Hip-Hop Artists on the Playlist (12) ---
+      { id: 18, type: "PLAYLIST", era: "2000s R&B",   title: "Usher",              clue: "Hear any Usher hit on the party playlist" },
+      { id: 19, type: "PLAYLIST", era: "2000s R&B",   title: "Destiny's Child",    clue: "Hear Destiny's Child on the speakers" },
+      { id: 20, type: "PLAYLIST", era: "2000s R&B",   title: "112 or Jagged Edge", clue: "Hear 112 or Jagged Edge playing" },
+      { id: 21, type: "PLAYLIST", era: "2000s R&B",   title: "Ashanti & Ja Rule",  clue: "Hear Ashanti or Ja Rule on the playlist" },
+      { id: 22, type: "PLAYLIST", era: "2000s R&B",   title: "Alicia Keys",        clue: "Hear Alicia Keys on the keys/speakers" },
+      { id: 23, type: "PLAYLIST", era: "2000s-Now",   title: "Beyoncé",            clue: "Hear Queen Bey solo on the playlist" },
+      { id: 24, type: "PLAYLIST", era: "2000s-Now",   title: "Chris Brown",        clue: "Hear any Chris Brown song playing" },
+      { id: 25, type: "PLAYLIST", era: "2000s-Now",   title: "Rihanna",            clue: "Hear Rihanna on the party playlist" },
+      { id: 26, type: "PLAYLIST", era: "2000s R&B",   title: "T-Pain",             clue: "Hear T-Pain auto-tune anthems playing" },
+      { id: 27, type: "PLAYLIST", era: "2000s R&B",   title: "Ne-Yo or Trey Songz",clue: "Hear Ne-Yo or Trey Songz on the speakers" },
+      { id: 28, type: "PLAYLIST", era: "2000s Rap",   title: "Nelly or 50 Cent",   clue: "Hear Nelly or 50 Cent on the playlist" },
+      { id: 29, type: "PLAYLIST", era: "2000s Rap",   title: "Kanye or Jay-Z",     clue: "Hear Kanye West or Jay-Z on the speakers" },
 
-      // Overheard Phrases & Party Room Moments (24 items)
-      { id: 37, title: "\"That's My Jam!\"", type: "OVERHEARD", era: "Party", hint: "Someone yells when song starts" },
-      { id: 38, title: "\"Back in the 90s...\"", type: "OVERHEARD", era: "Party", hint: "Nostalgia story begins" },
-      { id: 39, title: "\"Turn This Up!\"", type: "OVERHEARD", era: "Party", hint: "Someone asks for volume" },
-      { id: 40, title: "\"Who Made the Potato Salad?\"", type: "OVERHEARD", era: "Cookout", hint: "Classic cookout question" },
-      { id: 41, title: "\"I'm Outside / Pull Up\"", type: "OVERHEARD", era: "Slang", hint: "Overheard in convo" },
-      { id: 42, title: "\"Bye Felicia!\"", type: "OVERHEARD", era: "90s Quote", hint: "Friday quote spotted" },
-      { id: 43, title: "\"Say Less\"", type: "OVERHEARD", era: "Slang", hint: "Modern slang heard" },
-      { id: 44, title: "\"It's Giving...\"", type: "OVERHEARD", era: "Slang", hint: "Modern slang heard" },
-      { id: 45, title: "\"No Cap / For Real\"", type: "OVERHEARD", era: "Slang", hint: "Heard in conversation" },
-      { id: 46, title: "\"We Outside!\"", type: "OVERHEARD", era: "Slang", hint: "Party energy check" },
-      { id: 47, title: "\"Send Me Your CashApp/Zelle\"", type: "OVERHEARD", era: "Modern", hint: "Splitting food/drinks" },
-      { id: 48, title: "\"Remember 106 & Park?\"", type: "OVERHEARD", era: "00s", hint: "TV nostalgia mention" },
-      { id: 49, title: "\"My Knees Hurt\"", type: "OVERHEARD", era: "Grown Folks", hint: "After dancing too hard" },
-      { id: 50, title: "\"I Need a To-Go Plate\"", type: "OVERHEARD", era: "Cookout", hint: "Foil wrap request" },
-      { id: 51, title: "\"Who Got the Aux?\"", type: "OVERHEARD", era: "Party", hint: "Playlist critique" },
-      { id: 52, title: "\"Don't Step on My Shoes\"", type: "OVERHEARD", era: "90s–Now", hint: "Sneaker protection" },
-      { id: 53, title: "\"That's Old School!\"", type: "OVERHEARD", era: "Party", hint: "Calling a 90s hit old" },
-      { id: 54, title: "\"Let's Take a Shot\"", type: "OVERHEARD", era: "Party", hint: "Toast in the room" },
-      { id: 55, title: "\"What's Your Sign?\"", type: "OVERHEARD", era: "Party", hint: "Zodiac talk overheard" },
-      { id: 56, title: "\"Play Some Slow Jams\"", type: "OVERHEARD", era: "90s R&B", hint: "Requesting R&B classics" },
-      { id: 57, title: "\"Group Photo Time!\"", type: "OVERHEARD", era: "Party", hint: "Phones come out" },
-      { id: 58, title: "\"You Remember This Dance?\"", type: "OVERHEARD", era: "90s–00s", hint: "Electric slide / Swag Surf" },
-      { id: 59, title: "\"I'm Not Staying Late\"", type: "OVERHEARD", era: "Grown Folks", hint: "Said by someone staying late" },
-      { id: 60, title: "\"BINGO!\"", type: "OVERHEARD", era: "Game", hint: "First person to yell it!" }
+      // --- 2010s–Current R&B & Hip-Hop Artists on the Playlist (7) ---
+      { id: 30, type: "PLAYLIST", era: "2010s Rap",   title: "Lil Wayne",          clue: "Hear Weezy F. Baby on the playlist" },
+      { id: 31, type: "PLAYLIST", era: "2010s-Now",   title: "Drake",              clue: "Hear Drake on the party playlist" },
+      { id: 32, type: "PLAYLIST", era: "2010s-Now",   title: "Kendrick Lamar",     clue: "Hear Kendrick Lamar on the speakers" },
+      { id: 33, type: "PLAYLIST", era: "Current R&B", title: "SZA",                clue: "Hear SZA on the party playlist" },
+      { id: 34, type: "PLAYLIST", era: "Current R&B", title: "Bruno Mars / Silk Sonic", clue: "Hear Bruno Mars or Silk Sonic playing" },
+      { id: 35, type: "PLAYLIST", era: "Current R&B", title: "Frank Ocean",        clue: "Hear Frank Ocean on the playlist" },
+      { id: 36, type: "PLAYLIST", era: "Current R&B", title: "Daniel Caesar / H.E.R.", clue: "Hear Daniel Caesar or H.E.R. playing" },
+
+      // --- Overheard Party Phrases & Classic Room Moments (24) ---
+      { id: 37, type: "OVERHEARD", era: "Phrase",     title: "\"That's My Jam!\"",      clue: "Someone yells 'That's my song/jam!' when a track drops" },
+      { id: 38, type: "OVERHEARD", era: "Phrase",     title: "\"Who Made the Potato Salad?\"", clue: "Someone asks who made the potato salad or mac & cheese" },
+      { id: 39, type: "OVERHEARD", era: "Phrase",     title: "\"We Got Food at Home\"", clue: "Someone drops the classic parent quote 'We got food at home'" },
+      { id: 40, type: "OVERHEARD", era: "Phrase",     title: "\"My Knees / Back Hurt\"",clue: "Someone complains about their knees or back after dancing" },
+      { id: 41, type: "OVERHEARD", era: "Phrase",     title: "\"They Don't Make Music Like This\"", clue: "Someone says 'They don't make real R&B like this anymore'" },
+      { id: 42, type: "OVERHEARD", era: "Phrase",     title: "\"Turn It Up!\"",          clue: "Someone asks the host/DJ to turn the volume up" },
+      { id: 43, type: "OVERHEARD", era: "Phrase",     title: "\"Say Less\"",             clue: "You hear someone say 'Say less' in conversation" },
+      { id: 44, type: "OVERHEARD", era: "Phrase",     title: "\"It's Giving...\"",       clue: "Someone uses the phrase 'It's giving...'" },
+      { id: 45, type: "OVERHEARD", era: "Phrase",     title: "\"No Cap / For Real\"",    clue: "Someone says 'No cap' or 'Deadass'" },
+      { id: 46, type: "OVERHEARD", era: "Phrase",     title: "\"Let Me Hold Something\"",clue: "Someone jokes 'Let me hold a dollar / plate'" },
+      { id: 47, type: "OVERHEARD", era: "Phrase",     title: "\"Take a To-Go Plate\"",  clue: "Someone mentions making a to-go plate before leaving" },
+      { id: 48, type: "OVERHEARD", era: "Phrase",     title: "\"Where the Cup / Ice At?\"", clue: "Someone asks where the cups, ice, or chaser is" },
+      { id: 49, type: "OVERHEARD", era: "Moment",     title: "Electric Slide / Cha-Cha", clue: "Guests break into a line dance (Electric Slide, Wobble, etc.)" },
+      { id: 50, type: "OVERHEARD", era: "Moment",     title: "90s vs. 2000s Debate",     clue: "Two guests debate which era had better music or TV shows" },
+      { id: 51, type: "OVERHEARD", era: "Moment",     title: "Full Room Sing-Along",    clue: "At least 5 people sing a chorus word-for-word together" },
+      { id: 52, type: "OVERHEARD", era: "Phrase",     title: "\"I'm Outside\"",          clue: "Someone says 'I'm outside' (either arriving or going out)" },
+      { id: 53, type: "OVERHEARD", era: "Phrase",     title: "\"Don't Play With Me\"",   clue: "Someone playfully says 'Don't play with me!'" },
+      { id: 54, type: "OVERHEARD", era: "Phrase",     title: "\"You Know What Time It Is\"", clue: "Someone says 'You already know what time it is'" },
+      { id: 55, type: "OVERHEARD", era: "Phrase",     title: "\"Who Invited Them?\"",    clue: "Someone jokes 'Who invited them?' across the room" },
+      { id: 56, type: "OVERHEARD", era: "Phrase",     title: "\"Back in the Day...\"",   clue: "Someone starts a story with 'Back in the 90s / back in the day'" },
+      { id: 57, type: "OVERHEARD", era: "Moment",     title: "Air Microphone / Hand Wave", clue: "Someone sings into an imaginary mic or waves hands side-to-side" },
+      { id: 58, type: "OVERHEARD", era: "Phrase",     title: "\"Period / Periodt\"",     clue: "Someone ends a statement with 'Period!'" },
+      { id: 59, type: "OVERHEARD", era: "Phrase",     title: "\"I'm About to Head Out\"",clue: "Someone announces they are leaving (even if they stay 30 more mins)" },
+      { id: 60, type: "OVERHEARD", era: "Phrase",     title: "\"Run That Back!\"",       clue: "Someone asks to replay or rewind a song" }
     ];
 
     // =========================================================================
@@ -474,96 +508,159 @@
     let callHistory = []; // Ordered list of item IDs called
     let activeMobileCardNumber = 1; // Currently selected card in Mobile Phone Mode
     let hostBoardFilter = "ALL"; // ALL | PLAYLIST | OVERHEARD
-    const HOST_STORAGE_KEY = "urban_culture_bingo_host_v1";
+    const HOST_STORAGE_KEY = "urban_culture_bingo_host_v2";
+    const GUEST_STORAGE_KEY = "urban_culture_bingo_guest_v2";
+
+    // Curated Party Playlist (Matches all 36 Bingo Card Artists + Bonus Crowd Hits)
+    const PARTY_PLAYLIST_ERAS = [
+      {
+        eraTitle: "90s Golden Era R&B & Hip-Hop",
+        badgeColor: "text-amber-400 border-amber-400/40 bg-amber-400/10",
+        tracks: [
+          "Aaliyah – Are You That Somebody / One In A Million",
+          "Boyz II Men – Motownphilly / On Bended Knee",
+          "TLC – Waterfalls / No Scrubs",
+          "Mary J. Blige – Real Love / Family Affair",
+          "Jodeci – Come & Talk To Me / Freek'n You",
+          "Toni Braxton – You're Makin' Me High",
+          "Brandy & Monica – The Boy Is Mine",
+          "SWV – Weak / Right Here (Human Nature)",
+          "Xscape – Just Kickin' It / Understanding",
+          "Keith Sweat – Twisted / Nobody",
+          "Erykah Badu – On & On / Tyrone",
+          "Blackstreet – No Diggity (feat. Dr. Dre)",
+          "Lauryn Hill – Doo Wop (That Thing) / Ex-Factor",
+          "The Notorious B.I.G. – Hypnotize / Juicy",
+          "2Pac – California Love / I Get Around",
+          "OutKast – Rosa Parks / Ms. Jackson",
+          "Maze feat. Frankie Beverly – Before I Let Go",
+          "Bonus 90s: Montell Jordan – This Is How We Do It",
+          "Bonus 90s: Dru Hill – In My Bed (So So Def Remix)",
+          "Bonus 90s: Puff Daddy & Mase – Mo Money Mo Problems"
+        ]
+      },
+      {
+        eraTitle: "2000s Throwbacks & Club Anthems",
+        badgeColor: "text-fuchsia-400 border-fuchsia-400/40 bg-fuchsia-400/10",
+        tracks: [
+          "Usher – Yeah! / U Remind Me / Confessions Pt. II",
+          "Destiny's Child – Say My Name / Survivor",
+          "112 – Peaches & Cream / Dance With Me",
+          "Jagged Edge – Where the Party At",
+          "Ashanti & Ja Rule – Always On Time / Foolish",
+          "Alicia Keys – You Don't Know My Name / If I Ain't Got You",
+          "Beyoncé – Crazy In Love / Love On Top",
+          "Chris Brown – Run It! / Yo (Excuse Me Miss)",
+          "Rihanna – Umbrella / Pon de Replay / We Found Love",
+          "T-Pain – Buy U a Drank / Bartender",
+          "Ne-Yo – So Sick / Closer",
+          "Trey Songz – Bottoms Up / Can't Help But Wait",
+          "Nelly – Hot in Herre / Dilemma",
+          "50 Cent – In Da Club / 21 Questions",
+          "Kanye West – Gold Digger / Good Life",
+          "Jay-Z – Izzo (H.O.V.A.) / Empire State State of Mind",
+          "Bonus 00s: Mariah Carey – We Belong Together",
+          "Bonus 00s: Lil Jon & The East Side Boyz – Get Low",
+          "Bonus 00s: Ciara – 1, 2 Step / Goodies",
+          "Bonus 00s: Juvenile – Back That Azz Up"
+        ]
+      },
+      {
+        eraTitle: "2010s–Current R&B & Hip-Hop Vibes",
+        badgeColor: "text-cyan-400 border-cyan-400/40 bg-cyan-400/10",
+        tracks: [
+          "Lil Wayne – A Milli / Lollipop / Mrs. Officer",
+          "Drake – Nice For What / Hotline Bling / One Dance",
+          "Kendrick Lamar – Not Like Us / HUMBLE. / Alright",
+          "SZA – Kill Bill / Snooze / Love Galore",
+          "Bruno Mars & Silk Sonic – Leave The Door Open / Finesse",
+          "Frank Ocean – Thinkin Bout You / Pink + White",
+          "Daniel Caesar – Best Part (feat. H.E.R.)",
+          "Beyoncé – CUFF IT / Before I Let Go (Homecoming)",
+          "Bonus Modern: Victoria Monét – On My Mama",
+          "Bonus Modern: Future – Mask Off / March Madness",
+          "Bonus Modern: Cardi B – Bodak Yellow / I Like It",
+          "Bonus Modern: Megan Thee Stallion – Savage Remix",
+          "Bonus Modern: Summer Walker – Girls Need Love",
+          "Bonus Modern: Brent Faiyaz – Dead Man Walking",
+          "Bonus Modern: Chris Brown – Under The Influence",
+          "Bonus Modern: GloRilla & Megan Thee Stallion – Wanna Be",
+          "Bonus Modern: Miguel – Adorn / Sure Thing",
+          "Bonus Modern: The Weeknd – Blinding Lights / Starboy"
+        ]
+      }
+    ];
 
     // Neon accent bar colors matching the 90s flyer aesthetic (Cyan, Magenta, Purple, Gold)
     const NEON_BAR_CLASSES = [
-      { numColor: "text-cyan-400", barBg: "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.7)]" },
-      { numColor: "text-fuchsia-400", barBg: "bg-fuchsia-500 shadow-[0_0_8px_rgba(217,70,239,0.7)]" },
-      { numColor: "text-purple-400", barBg: "bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.7)]" },
-      { numColor: "text-amber-400", barBg: "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]" }
+      { numColor: "text-cyan-400",    barBg: "bg-cyan-400" },
+      { numColor: "text-fuchsia-500", barBg: "bg-fuchsia-500" },
+      { numColor: "text-purple-400",  barBg: "bg-purple-500" },
+      { numColor: "text-amber-400",   barBg: "bg-amber-400" }
     ];
 
-    // Seeded pseudo-random generator for reproducible & distinct 30 card layouts
     function mulberry32(seed) {
-      return function() {
-        let t = seed += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      return function () {
+        let t = (seed += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       };
     }
 
-    function generate30UniqueCards(baseSeed = 902026) {
+    function generate30UniqueCards(seedOffset = 0) {
       const cards = [];
-      const seenSignatures = new Set();
+      const usedSignatures = new Set();
+      let attemptSeed = 902026 + seedOffset;
 
-      for (let i = 1; i <= 30; i++) {
-        let attempt = 0;
-        let selectedItems = [];
-        let signature = "";
+      while (cards.length < 30) {
+        const rand = mulberry32(attemptSeed++);
+        const poolCopy = [...CULTURE_ITEMS];
 
-        while (attempt < 50) {
-          const rng = mulberry32(baseSeed + i * 997 + attempt * 31);
-          const poolCopy = [...CULTURE_ITEMS];
-
-          // Fisher-Yates shuffle using seeded RNG
-          for (let j = poolCopy.length - 1; j > 0; j--) {
-            const k = Math.floor(rng() * (j + 1));
-            [poolCopy[j], poolCopy[k]] = [poolCopy[k], poolCopy[j]];
-          }
-
-          selectedItems = poolCopy.slice(0, 24);
-          signature = selectedItems.map(item => item.id).join("-");
-
-          if (!seenSignatures.has(signature)) {
-            seenSignatures.add(signature);
-            break;
-          }
-          attempt++;
+        // Fisher-Yates shuffle
+        for (let i = poolCopy.length - 1; i > 0; i--) {
+          const j = Math.floor(rand() * (i + 1));
+          [poolCopy[i], poolCopy[j]] = [poolCopy[j], poolCopy[i]];
         }
 
-        // Build 5x5 grid (25 cells, index 12 is FREE SPACE)
-        const grid = [];
-        let itemCursor = 0;
-        for (let cellIdx = 0; cellIdx < 25; cellIdx++) {
-          if (cellIdx === 12) {
-            grid.push({
-              isFree: true,
-              title: "FREE SPACE",
-              type: "FREE",
-              era: "ALL ERAS",
-              hint: "THE COOKOUT"
-            });
-          } else {
-            grid.push({
-              isFree: false,
-              ...selectedItems[itemCursor++]
-            });
-          }
-        }
+        const selected24 = poolCopy.slice(0, 24);
+        const signature = selected24.map(item => item.id).sort((a, b) => a - b).join("-");
 
-        cards.push({
-          cardNumber: i,
-          grid,
-          marked: new Set([12]) // Free space pre-marked
-        });
+        if (!usedSignatures.has(signature)) {
+          usedSignatures.add(signature);
+          const grid = [];
+          let itemIdx = 0;
+
+          for (let pos = 0; pos < 25; pos++) {
+            if (pos === 12) {
+              grid.push({ isFree: true, title: "GOOD VIBES", type: "FREE", era: "FREE" });
+            } else {
+              grid.push({ ...selected24[itemIdx++], isFree: false });
+            }
+          }
+
+          cards.push({
+            cardNumber: cards.length + 1,
+            grid,
+            marked: new Set([12])
+          });
+        }
       }
 
       generatedCards = cards;
     }
 
     // =========================================================================
-    // 3. CARD RENDERING & INTERACTIVE DAUBING
+    // 3. RENDER 30 FLYER-STYLE CARDS
     // =========================================================================
     function populateCardDropdown() {
       const select = document.getElementById("card-filter");
       if (!select) return;
-      select.innerHTML = `<option value="all">Show All 30 Cards (Print Ready)</option>`;
+      select.innerHTML = `<option value="all">All 30 Variations (Cards #01–#30)</option>`;
       for (let i = 1; i <= 30; i++) {
         const opt = document.createElement("option");
         opt.value = i;
-        opt.textContent = `Card #${String(i).padStart(2, "0")} Only`;
+        opt.textContent = `Card #${String(i).padStart(2, "0")}`;
         select.appendChild(opt);
       }
     }
@@ -576,18 +673,15 @@
 
     function renderCards() {
       const container = document.getElementById("cards-container");
+      if (!container) return;
       const filterEl = document.getElementById("card-filter");
-      const badgeToggleEl = document.getElementById("era-badge-toggle");
-      if (!container || !filterEl || !badgeToggleEl) return;
+      const filterVal = filterEl ? filterEl.value : "all";
 
-      const filterVal = filterEl.value;
-      const showLabels = badgeToggleEl.value === "show";
-
-      const cardsToDisplay = filterVal === "all"
+      const cardsToRender = filterVal === "all"
         ? generatedCards
-        : generatedCards.filter(c => c.cardNumber === parseInt(filterVal, 10));
+        : generatedCards.filter(c => c.cardNumber === Number(filterVal));
 
-      container.innerHTML = cardsToDisplay.map(card => {
+      container.innerHTML = cardsToRender.map(card => {
         const cellsHtml = card.grid.map((cell, idx) => {
           const isMarked = card.marked.has(idx);
           const displayNum = idx + 1;
@@ -595,39 +689,41 @@
 
           if (cell.isFree) {
             return `
-              <div class="aspect-square p-1.5 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-700">
+              <div class="aspect-square p-1.5 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
                 <span class="absolute top-1 left-1.5 text-[10px] font-black text-zinc-950/80">13.</span>
-                <span class="text-[9px] uppercase tracking-widest font-extrabold">FREE</span>
+                <span class="text-[9px] uppercase tracking-widest font-extrabold">FREE SPACE</span>
                 <span class="text-xs sm:text-sm font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
-                <div class="w-8 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
+                <div class="w-7 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
               </div>
             `;
           }
 
-          const markedStyle = isMarked
-            ? "bg-fuchsia-950/85 border-amber-400 ring-2 ring-amber-400 text-white"
-            : "bg-zinc-950/90 hover:bg-zinc-900 border-zinc-800 text-white";
+          const interactiveClass = isMarked
+            ? "bg-fuchsia-950/80 border-amber-400 ring-2 ring-amber-400 text-white"
+            : "bg-zinc-950/90 hover:bg-zinc-900 border-zinc-700/80 text-white";
 
           return `
             <button
               type="button"
               onclick="toggleCardSquare(${card.cardNumber}, ${idx})"
-              class="aspect-square p-1.5 sm:p-2 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${markedStyle}"
+              class="aspect-square p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
             >
               <div class="w-full flex items-center justify-between">
                 <span class="text-[11px] font-black ${accent.numColor}">${displayNum}.</span>
-                ${showLabels ? `<span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">${cell.type === "PLAYLIST" ? "PLAYLIST" : "OVERHEARD"}</span>` : ""}
+                <span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">
+                  ${cell.type === "PLAYLIST" ? "♫ SONG" : "💬 HEAR"}
+                </span>
               </div>
 
               <span class="text-[11px] sm:text-xs font-extrabold leading-tight line-clamp-3 my-auto px-0.5">
                 ${cell.title}
               </span>
 
-              <div class="w-7 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-1"></div>
+              <div class="w-8 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5"></div>
 
               ${isMarked ? `
-                <div class="absolute inset-0 bg-amber-400/20 pointer-events-none flex items-center justify-center">
-                  <span class="w-9 h-9 rounded-full border-4 border-amber-400 shadow-lg"></span>
+                <div class="no-print absolute inset-0 bg-amber-400/20 pointer-events-none flex items-center justify-center">
+                  <span class="w-9 h-9 rounded-full border-4 border-amber-400/85"></span>
                 </div>
               ` : ""}
             </button>
@@ -635,50 +731,54 @@
         }).join("");
 
         return `
-          <article class="bingo-card-sheet retro-flyer-bg border-2 border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-2xl text-white flex flex-col justify-between">
-            <!-- Retro 90s Flyer Header -->
-            <div class="relative mb-4 pb-3 border-b border-zinc-800/90">
-              <div class="flex items-start justify-between gap-2">
-                <!-- Cassette Tape Badge -->
-                <div class="bg-zinc-900/90 border border-zinc-700 rounded-lg px-2.5 py-1.5 -rotate-3 shadow-md">
-                  <div class="text-[8px] font-black tracking-widest text-amber-400 uppercase">GOOD MUSIC • BETTER DAYS</div>
-                  <div class="flex items-center gap-1.5 mt-0.5">
-                    <span class="w-2.5 h-2.5 rounded-full border border-zinc-400 bg-zinc-950"></span>
-                    <span class="h-1.5 flex-1 bg-amber-400/80 rounded-sm"></span>
-                    <span class="w-2.5 h-2.5 rounded-full border border-zinc-400 bg-zinc-950"></span>
-                  </div>
+          <article class="bingo-card-sheet retro-flyer-bg border-2 border-zinc-700 rounded-3xl p-4 sm:p-5 shadow-2xl text-white relative overflow-hidden">
+            
+            <!-- Top Flyer Decorative Row: Cassette Badge + Header + Crown -->
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <!-- Retro Cassette Mini Badge -->
+              <div class="hidden sm:flex flex-col items-center justify-center bg-zinc-200 text-zinc-950 rounded-md px-2 py-1 border-2 border-zinc-800 -rotate-6 shadow">
+                <span class="text-[7px] font-black tracking-tighter uppercase">GOOD MUSIC</span>
+                <div class="flex items-center gap-1 my-0.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-900 inline-block"></span>
+                  <span class="w-3 h-1.5 bg-amber-400 inline-block"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-900 inline-block"></span>
                 </div>
+                <span class="text-[7px] font-extrabold uppercase">90s–NOW</span>
+              </div>
 
-                <!-- Card Variation Tag & Crown -->
-                <div class="text-right">
-                  <span class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] px-2.5 py-0.5 uppercase tracking-widest rotate-1">
-                    CARD #${String(card.cardNumber).padStart(2, "0")}
-                  </span>
-                  <div class="font-graffiti text-[11px] text-amber-400 mt-1 rotate-2">
-                    PARTY EARS EDITION
-                  </div>
+              <!-- Center Stacked Flyer Title -->
+              <div class="text-center flex-1">
+                <div class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] sm:text-xs px-3 py-0.5 uppercase tracking-widest -rotate-1 mb-1">
+                  PARTY EARS EDITION • CARD #${String(card.cardNumber).padStart(2, '0')}
+                </div>
+                <h2 class="font-flyer-title text-2xl sm:text-3xl text-amber-400 leading-none drop-shadow-[0_2px_0_rgba(0,0,0,0.9)]">
+                  90's–CURRENT
+                </h2>
+                <div class="font-flyer-title text-xl sm:text-2xl text-fuchsia-500 leading-none -mt-0.5 drop-shadow-[0_2px_0_rgba(0,0,0,0.9)]">
+                  CULTURE BINGO
+                </div>
+                <div class="inline-block border border-amber-400/80 text-amber-300 text-[9px] font-extrabold tracking-[0.25em] px-3 py-0.5 mt-1 uppercase">
+                  HEAR THE SONG OR PHRASE & MARK IT
                 </div>
               </div>
 
-              <div class="text-center mt-2">
-                <h2 class="font-flyer-title text-2xl sm:text-3xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-fuchsia-400 to-cyan-300 drop-shadow">
-                  90's–CURRENT BINGO
-                </h2>
-                <p class="text-[11px] text-zinc-300 font-medium mt-0.5">
-                  Mark squares when you hear the <span class="text-cyan-300 font-bold">Artist</span> on the playlist or overhear the <span class="text-fuchsia-300 font-bold">Phrase</span>!
-                </p>
+              <!-- Retro Crown SVG -->
+              <div class="hidden sm:flex items-center justify-center rotate-12 pt-1">
+                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 18h18M4 15l2-9 6 5 6-5 2 9H4z" />
+                </svg>
               </div>
             </div>
 
-            <!-- 5x5 Bingo Grid -->
-            <div class="grid grid-cols-5 border border-zinc-700 bg-zinc-950/70">
+            <!-- 5x5 Numbered Grid -->
+            <div class="grid grid-cols-5 border border-zinc-700 bg-zinc-950/60">
               ${cellsHtml}
             </div>
 
             <!-- Card Footer -->
-            <div class="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400">
-              <span>5 IN A ROW WINS • CARD #${String(card.cardNumber).padStart(2, "0")} / 30</span>
-              <span class="font-bold text-amber-400 no-print">${card.marked.size} / 25 Marked</span>
+            <div class="mt-3 pt-2 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
+              <span><strong class="text-cyan-300">♫ SONG:</strong> Artist plays on speakers</span>
+              <span><strong class="text-fuchsia-300">💬 HEAR:</strong> Said in the room</span>
             </div>
           </article>
         `;
@@ -698,363 +798,376 @@
 
       renderCards();
       if (cardNumber === activeMobileCardNumber) {
+        saveGuestState();
         renderMobileActiveCard();
       }
     }
 
     function regenerateDeck() {
-      const newSeed = Math.floor(Math.random() * 900000) + 100000;
-      generate30UniqueCards(newSeed);
+      generate30UniqueCards(Math.floor(Math.random() * 10000));
       renderCards();
       renderMobileActiveCard();
-      showToast("Generated a brand new set of 30 unique cards!");
+      showToast("Generated 30 fresh shuffled Bingo cards!");
     }
 
     function printAllCards() {
-      const filterEl = document.getElementById("card-filter");
-      if (filterEl && filterEl.value !== "all") {
-        filterEl.value = "all";
-        renderCards();
-      }
+      const filterSelect = document.getElementById("card-filter");
+      if (filterSelect) filterSelect.value = "all";
+      renderCards();
       setTimeout(() => {
         window.print();
       }, 150);
     }
 
     // =========================================================================
-    // 4. HOST CALLER BOARD LOGIC (WITH PHONE FILTERING & AUTO-SAVE)
+    // 4. HOST TRACKER & PHONE PERSISTENCE
     // =========================================================================
     function saveHostProgress() {
       try {
         localStorage.setItem(HOST_STORAGE_KEY, JSON.stringify({
-          called: Array.from(calledItemIds),
+          calledIds: Array.from(calledItemIds),
           history: callHistory
         }));
       } catch (e) {
-        // Ignore storage errors in restricted iframes
+        // Ignore storage restrictions
       }
     }
 
     function loadHostProgress() {
       try {
         const raw = localStorage.getItem(HOST_STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed.called)) {
-            calledItemIds = new Set(parsed.called);
-          }
-          if (Array.isArray(parsed.history)) {
-            callHistory = parsed.history;
-          }
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.calledIds)) {
+          calledItemIds = new Set(parsed.calledIds);
+          callHistory = Array.isArray(parsed.history) ? parsed.history : Array.from(calledItemIds);
         }
       } catch (e) {
-        // Ignore storage errors
+        // Ignore storage restrictions
       }
     }
 
     function setHostFilter(filterType) {
       hostBoardFilter = filterType;
-      const buttons = {
-        ALL: document.getElementById("filter-host-all"),
-        PLAYLIST: document.getElementById("filter-host-music"),
-        OVERHEARD: document.getElementById("filter-host-overheard")
-      };
-      Object.entries(buttons).forEach(([key, btn]) => {
+      ["ALL", "PLAYLIST", "OVERHEARD"].forEach(type => {
+        const btn = document.getElementById(`filter-btn-${type}`);
         if (!btn) return;
-        btn.className = key === filterType
-          ? "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-400 text-zinc-950 transition"
-          : "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition";
+        if (type === filterType) {
+          btn.className = "px-3 py-2 rounded-xl text-xs font-bold bg-amber-400 text-zinc-950";
+        } else {
+          btn.className = type === "PLAYLIST"
+            ? "px-3 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-cyan-300"
+            : type === "OVERHEARD"
+            ? "px-3 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-fuchsia-300"
+            : "px-3 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-zinc-300";
+        }
       });
       renderMasterBoard();
     }
 
     function renderMasterBoard() {
       const grid = document.getElementById("master-board-grid");
-      document.getElementById("called-counter").textContent = calledItemIds.size;
+      const counter = document.getElementById("called-counter");
+      if (!grid) return;
+
+      if (counter) {
+        counter.textContent = `${calledItemIds.size} / ${CULTURE_ITEMS.length} Logged`;
+      }
 
       const searchInput = document.getElementById("host-search-input");
       const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
       const filteredItems = CULTURE_ITEMS.filter(item => {
         const matchesType = hostBoardFilter === "ALL" || item.type === hostBoardFilter;
-        const matchesQuery = !query ||
-          item.title.toLowerCase().includes(query) ||
-          item.hint.toLowerCase().includes(query) ||
-          item.era.toLowerCase().includes(query);
-        return matchesType && matchesQuery;
+        const matchesSearch = !query || item.title.toLowerCase().includes(query) || item.clue.toLowerCase().includes(query);
+        return matchesType && matchesSearch;
       });
-
-      if (filteredItems.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-zinc-500">No matching artists or room phrases found.</div>`;
-        updateCurrentCallSpotlight();
-        return;
-      }
 
       grid.innerHTML = filteredItems.map(item => {
         const isCalled = calledItemIds.has(item.id);
-        const typeBadge = item.type === "PLAYLIST"
-          ? `<span class="text-[10px] font-extrabold text-cyan-400">♫ SONG</span>`
-          : `<span class="text-[10px] font-extrabold text-fuchsia-400">💬 PHRASE</span>`;
-
-        const btnStyle = isCalled
-          ? "bg-amber-400 text-zinc-950 border-amber-300 font-extrabold shadow-md shadow-amber-500/10"
-          : "bg-zinc-950 text-zinc-200 border-zinc-800 hover:border-zinc-600 font-medium active:scale-95";
+        const typeBadge = item.type === "PLAYLIST" ? "♫ SONG" : "💬 PHRASE";
+        const badgeColor = item.type === "PLAYLIST" ? "text-cyan-300" : "text-fuchsia-300";
 
         return `
           <button
             type="button"
-            onclick="toggleMasterItem(${item.id})"
-            class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-1.5 min-h-[76px] ${btnStyle}"
+            onclick="toggleCalledItem(${item.id})"
+            class="p-3 rounded-xl border text-left transition-all flex flex-col justify-between min-h-[76px] ${
+              isCalled
+                ? "bg-amber-400 text-zinc-950 border-amber-300 font-extrabold shadow-md"
+                : "bg-zinc-950 text-zinc-200 border-zinc-800 hover:border-zinc-600"
+            }"
           >
-            <div class="flex items-center justify-between w-full gap-1">
-              ${isCalled ? `<span class="text-[10px] font-black uppercase px-1.5 py-0.5 bg-zinc-950 text-amber-300 rounded">✓ Heard</span>` : typeBadge}
-              <span class="text-[10px] font-bold uppercase opacity-75">${item.era}</span>
+            <div class="w-full flex items-center justify-between text-[10px] font-bold uppercase tracking-wider mb-1 ${isCalled ? "text-zinc-900" : badgeColor}">
+              <span>${typeBadge}</span>
+              <span>${isCalled ? "✓ HEARD" : `#${item.id}`}</span>
             </div>
-            <span class="text-xs sm:text-[13px] font-bold leading-snug">${item.title}</span>
+            <div class="text-xs sm:text-sm font-bold leading-snug">${item.title}</div>
           </button>
         `;
       }).join("");
-
-      updateCurrentCallSpotlight();
     }
 
-    function updateCurrentCallSpotlight() {
-      const box = document.getElementById("current-call-box");
-      if (callHistory.length === 0) {
-        box.innerHTML = `<p class="text-zinc-500 text-sm font-medium">Press "Draw Next Culture Item" to start the game!</p>`;
-        return;
+    function toggleCalledItem(itemId) {
+      const item = CULTURE_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+
+      if (calledItemIds.has(itemId)) {
+        calledItemIds.delete(itemId);
+        callHistory = callHistory.filter(id => id !== itemId);
+        showToast(`Unmarked: ${item.title}`);
+      } else {
+        calledItemIds.add(itemId);
+        callHistory.push(itemId);
+        updateCurrentCallDisplay(item);
+        showToast(`Logged: ${item.title}`);
       }
-
-      const latestId = callHistory[callHistory.length - 1];
-      const item = CULTURE_ITEMS.find(i => i.id === latestId);
-
-      box.innerHTML = `
-        <span class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-2">
-          ${item.era} Era
-        </span>
-        <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">
-          ${item.title}
-        </h3>
-        <p class="text-sm text-zinc-400 italic">
-          "${item.hint}"
-        </p>
-      `;
+      saveHostProgress();
+      renderMasterBoard();
     }
 
     function drawNextItem() {
       const remaining = CULTURE_ITEMS.filter(item => !calledItemIds.has(item.id));
       if (remaining.length === 0) {
-        showToast("All 60 items have been called!");
+        showToast("All 60 items have already been logged!");
         return;
       }
 
-      const randomIndex = Math.floor(Math.random() * remaining.length);
-      const chosen = remaining[randomIndex];
+      const randomIdx = Math.floor(Math.random() * remaining.length);
+      const chosen = remaining[randomIdx];
 
       calledItemIds.add(chosen.id);
       callHistory.push(chosen.id);
       saveHostProgress();
+      updateCurrentCallDisplay(chosen);
       renderMasterBoard();
     }
 
-    function toggleMasterItem(id) {
-      if (calledItemIds.has(id)) {
-        calledItemIds.delete(id);
-        callHistory = callHistory.filter(item => item !== id);
-      } else {
-        calledItemIds.add(id);
-        callHistory.push(id);
-      }
-      saveHostProgress();
-      renderMasterBoard();
+    function updateCurrentCallDisplay(item) {
+      const display = document.getElementById("current-call-display");
+      if (!display) return;
+      const label = item.type === "PLAYLIST" ? "♫ PLAYLIST ARTIST" : "💬 ROOM PHRASE / MOMENT";
+      display.innerHTML = `
+        <span class="text-[11px] uppercase tracking-widest text-amber-400 font-extrabold mb-1">${label} • #${item.id}</span>
+        <h2 class="text-xl sm:text-2xl font-black text-white leading-tight">${item.title}</h2>
+        <p class="text-xs text-zinc-300 mt-1.5 max-w-md">${item.clue}</p>
+      `;
     }
 
-    function confirmResetCaller() {
-      document.getElementById("reset-confirm-bar").classList.remove("hidden");
-    }
-
-    function cancelResetCaller() {
-      document.getElementById("reset-confirm-bar").classList.add("hidden");
-    }
-
-    function resetCaller() {
+    function resetCallerBoard() {
       calledItemIds.clear();
       callHistory = [];
       saveHostProgress();
-      cancelResetCaller();
+      const display = document.getElementById("current-call-display");
+      if (display) {
+        display.innerHTML = `
+          <span class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold mb-1">Tap Any Tile on the Board to Log It</span>
+          <h2 class="text-lg sm:text-xl font-black text-white">Track Songs & Overheard Phrases</h2>
+          <p class="text-xs text-zinc-400 mt-1">Auto-saved to your phone • Or draw a random prompt below</p>
+        `;
+      }
+      const res = document.getElementById("verify-result");
+      if (res) res.classList.add("hidden");
       renderMasterBoard();
-      document.getElementById("verify-result").innerHTML = "";
-      showToast("Caller board cleared for a fresh round!");
+      showToast("Host tracker cleared for a new round!");
     }
 
     // =========================================================================
-    // 5. BINGO CARD VERIFIER (CHECKS WINNING LINES AGAINST CALLED ITEMS)
+    // 5. BINGO WINNING LINE VERIFIER
     // =========================================================================
     function verifyPlayerCard() {
       const input = document.getElementById("verify-card-input");
       const resultBox = document.getElementById("verify-result");
       const cardNum = parseInt(input.value, 10);
 
+      resultBox.classList.remove("hidden");
+
       if (isNaN(cardNum) || cardNum < 1 || cardNum > 30) {
-        resultBox.innerHTML = `<p class="text-rose-400 font-semibold">Please enter a valid Card # between 1 and 30.</p>`;
+        resultBox.className = "mt-3 rounded-xl p-3.5 text-xs bg-rose-500/15 border border-rose-500/40 text-rose-300 font-semibold";
+        resultBox.textContent = "Please enter a valid Card Number between 1 and 30.";
         return;
       }
 
       const card = generatedCards.find(c => c.cardNumber === cardNum);
-      if (!card) return;
+      const matched = card.grid.map(cell => cell.isFree || calledItemIds.has(cell.id));
 
-      // Determine which cells on this card have actually been called
-      const hitIndices = new Set([12]); // Free space counts
-      card.grid.forEach((cell, idx) => {
-        if (!cell.isFree && calledItemIds.has(cell.id)) {
-          hitIndices.add(idx);
-        }
-      });
-
-      // Check 12 standard Bingo lines (5 rows, 5 cols, 2 diagonals)
       const winningLines = [
-        [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24], // Rows
-        [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24], // Cols
-        [0,6,12,18,24], [4,8,12,16,20] // Diagonals
+        { name: "Row 1 (Top)", indices: [0, 1, 2, 3, 4] },
+        { name: "Row 2", indices: [5, 6, 7, 8, 9] },
+        { name: "Row 3 (Middle)", indices: [10, 11, 12, 13, 14] },
+        { name: "Row 4", indices: [15, 16, 17, 18, 19] },
+        { name: "Row 5 (Bottom)", indices: [20, 21, 22, 23, 24] },
+        { name: "Column 1", indices: [0, 5, 10, 15, 20] },
+        { name: "Column 2", indices: [1, 6, 11, 16, 21] },
+        { name: "Column 3 (Middle)", indices: [2, 7, 12, 17, 22] },
+        { name: "Column 4", indices: [3, 8, 13, 18, 23] },
+        { name: "Column 5", indices: [4, 9, 14, 19, 24] },
+        { name: "Diagonal (Top-Left to Bottom-Right)", indices: [0, 6, 12, 18, 24] },
+        { name: "Diagonal (Top-Right to Bottom-Left)", indices: [4, 8, 12, 16, 20] }
       ];
 
-      const completedLines = winningLines.filter(line => line.every(idx => hitIndices.has(idx)));
-      const winningCells = new Set(completedLines.flat());
+      const completedLines = winningLines.filter(line =>
+        line.indices.every(idx => matched[idx])
+      );
 
-      const bannerHtml = completedLines.length > 0
-        ? `<div class="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold mb-3">
-             VALID BINGO! Card #${cardNum} has ${completedLines.length} verified winning line(s)!
-           </div>`
-        : `<div class="p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-semibold mb-3">
-             Not quite! Card #${cardNum} has ${hitIndices.size - 1} called matches, but no 5-in-a-row yet.
-           </div>`;
-
-      const miniGridHtml = card.grid.map((cell, idx) => {
-        const isHit = hitIndices.has(idx);
-        const isWinLine = winningCells.has(idx);
-
-        let cellClass = "bg-zinc-950 border-zinc-800 text-zinc-500";
-        if (isWinLine) {
-          cellClass = "bg-emerald-500 text-zinc-950 border-emerald-300 font-black";
-        } else if (isHit) {
-          cellClass = "bg-amber-500/30 border-amber-400 text-amber-200 font-bold";
-        }
-
-        return `
-          <div class="p-1.5 rounded-lg border text-[10px] leading-tight text-center flex items-center justify-center min-h-[44px] ${cellClass}">
-            ${cell.isFree ? "FREE" : cell.title}
-          </div>
+      if (completedLines.length > 0) {
+        const lineNames = completedLines.map(l => l.name).join(", ");
+        resultBox.className = "mt-3 rounded-xl p-4 text-xs bg-emerald-500/15 border border-emerald-500/50 text-emerald-200";
+        resultBox.innerHTML = `
+          <div class="font-black text-sm text-emerald-400 mb-1">🎉 VALID BINGO ON CARD #${String(cardNum).padStart(2, '0')}!</div>
+          <div>Completed: <strong>${lineNames}</strong></div>
         `;
-      }).join("");
-
-      resultBox.innerHTML = `
-        ${bannerHtml}
-        <div class="grid grid-cols-5 gap-1">
-          ${miniGridHtml}
-        </div>
-      `;
+      } else {
+        const matchedCount = matched.filter(Boolean).length;
+        resultBox.className = "mt-3 rounded-xl p-4 text-xs bg-amber-500/15 border border-amber-500/40 text-amber-200";
+        resultBox.innerHTML = `
+          <div class="font-extrabold text-sm text-amber-400 mb-1">No 5-in-a-Row Logged Yet on Card #${String(cardNum).padStart(2, '0')}</div>
+          <div>Matches ${matchedCount}/25 squares against your host log. (If they heard a room phrase you didn't log yet, tap that phrase on your board and re-check!)</div>
+        `;
+      }
     }
 
     // =========================================================================
-    // 6. NAVIGATION & TOAST HELPERS
+    // 5B. DUAL QR CODE GENERATOR & GUEST MOBILE PLAYER VIEW
     // =========================================================================
-    // 5B. QR CODE GENERATOR & MOBILE PHONE PLAYER VIEW
-    // =========================================================================
+    function saveGuestState() {
+      try {
+        const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
+        if (!card) return;
+        localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify({
+          cardNumber: activeMobileCardNumber,
+          marked: Array.from(card.marked)
+        }));
+      } catch (e) {
+        // Ignore storage errors
+      }
+    }
+
+    function loadGuestState() {
+      try {
+        const raw = localStorage.getItem(GUEST_STORAGE_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.cardNumber >= 1 && parsed.cardNumber <= 30) {
+          activeMobileCardNumber = parsed.cardNumber;
+          const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
+          if (card && Array.isArray(parsed.marked)) {
+            card.marked = new Set(parsed.marked);
+            card.marked.add(12);
+          }
+          return true;
+        }
+      } catch (e) {
+        // Ignore storage errors
+      }
+      return false;
+    }
+
+    function getCleanBaseUrl() {
+      return window.location.href.split("?")[0].split("#")[0];
+    }
+
     function initQRAndMobileHub() {
       const urlInput = document.getElementById("custom-qr-url");
       const warningEl = document.getElementById("qr-preview-warning");
 
-      // Build clean URL with ?mode=play so scanning opens directly into Mobile Phone Mode
-      let baseUrl = window.location.href.split("?")[0].split("#")[0];
+      const baseUrl = getCleanBaseUrl();
       const isSandbox = baseUrl.startsWith("about:") || baseUrl.startsWith("blob:") || baseUrl.startsWith("data:") || baseUrl.includes("googleusercontent");
 
       if (isSandbox) {
         warningEl.classList.remove("hidden");
-        urlInput.value = baseUrl;
-      } else {
-        urlInput.value = `${baseUrl}?mode=play`;
       }
-
-      generateQRCodeImage(urlInput.value);
-
-      // Populate mobile dropdown & quick-tap 1–30 grid
-      const mobileSelect = document.getElementById("mobile-card-select");
-      mobileSelect.innerHTML = "";
-      for (let i = 1; i <= 30; i++) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = `Playing Card #${String(i).padStart(2, "0")}`;
-        mobileSelect.appendChild(opt);
-      }
-
-      renderMobileCardPills();
-      renderMobileActiveCard();
+      urlInput.value = baseUrl;
+      renderDualQRCodes(baseUrl);
     }
 
-    function generateQRCodeImage(targetUrl) {
-      const qrContainer = document.getElementById("qrcode-canvas");
-      qrContainer.innerHTML = "";
+    function renderDualQRCodes(rawBaseUrl) {
+      const cleanBase = (rawBaseUrl || getCleanBaseUrl()).split("?")[0].split("#")[0];
+      const guestUrl = `${cleanBase}?mode=guest`;
+      const hostUrl = `${cleanBase}?mode=host`;
+
+      const guestBox = document.getElementById("qrcode-guest-canvas");
+      const hostBox = document.getElementById("qrcode-host-canvas");
+      if (guestBox) guestBox.innerHTML = "";
+      if (hostBox) hostBox.innerHTML = "";
+
       if (typeof QRCode !== "undefined") {
-        new QRCode(qrContainer, {
-          text: targetUrl || "https://example.com",
-          width: 200,
-          height: 200,
-          colorDark: "#09090b",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.M
-        });
+        if (guestBox) {
+          new QRCode(guestBox, {
+            text: guestUrl,
+            width: 184,
+            height: 184,
+            colorDark: "#09090b",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
+        if (hostBox) {
+          new QRCode(hostBox, {
+            text: hostUrl,
+            width: 184,
+            height: 184,
+            colorDark: "#09090b",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
       }
+
+      const testGuest = document.getElementById("test-guest-link");
+      const testHost = document.getElementById("test-host-link");
+      if (testGuest) testGuest.href = guestUrl;
+      if (testHost) testHost.href = hostUrl;
     }
 
     function updateQRCodeFromInput() {
       const val = document.getElementById("custom-qr-url").value.trim();
       if (val) {
-        generateQRCodeImage(val);
+        renderDualQRCodes(val);
       }
     }
 
-    function copyPartyLink() {
-      const input = document.getElementById("custom-qr-url");
-      input.select();
-      input.setSelectionRange(0, 99999);
+    function copyTextToClipboard(text, successMsg) {
+      const tempInput = document.createElement("input");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      tempInput.setSelectionRange(0, 99999);
       try {
         document.execCommand("copy");
-        showToast("Party Bingo link copied to clipboard!");
+        showToast(successMsg);
       } catch (err) {
-        showToast("Highlight and copy the URL from the box.");
+        showToast("Copy failed—please copy from the URL bar.");
       }
+      document.body.removeChild(tempInput);
     }
 
-    function renderMobileCardPills() {
-      const pillsBox = document.getElementById("mobile-card-pills");
-      pillsBox.innerHTML = generatedCards.map(c => {
-        const isActive = c.cardNumber === activeMobileCardNumber;
-        const style = isActive
-          ? "bg-amber-400 text-zinc-950 border-amber-300 font-black shadow"
-          : "bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-zinc-600 font-semibold";
-        return `
-          <button
-            type="button"
-            onclick="selectMobileCard(${c.cardNumber})"
-            class="py-2 rounded-lg border text-xs transition ${style}"
-          >
-            #${String(c.cardNumber).padStart(2, "0")}
-          </button>
-        `;
-      }).join("");
+    function copyGuestLink() {
+      const base = document.getElementById("custom-qr-url").value.trim().split("?")[0];
+      copyTextToClipboard(`${base}?mode=guest`, "Guest Random-Card link copied!");
+    }
+
+    function copyHostLink() {
+      const base = document.getElementById("custom-qr-url").value.trim().split("?")[0];
+      copyTextToClipboard(`${base}?mode=host`, "Host Tracker link copied!");
     }
 
     function selectMobileCard(cardNum) {
       activeMobileCardNumber = cardNum;
-      document.getElementById("mobile-card-select").value = cardNum;
-      renderMobileCardPills();
+      saveGuestState();
       renderMobileActiveCard();
     }
 
-    function assignRandomMobileCard() {
+    function assignRandomMobileCard(notify = false) {
       const randomNum = Math.floor(Math.random() * 30) + 1;
+      const card = generatedCards.find(c => c.cardNumber === randomNum);
+      if (card) {
+        card.marked = new Set([12]);
+      }
       selectMobileCard(randomNum);
-      showToast(`You got Card #${String(randomNum).padStart(2, "0")}! Good luck!`);
+      if (notify) {
+        showToast(`Dealt Random Card #${String(randomNum).padStart(2, "0")}!`);
+      }
     }
 
     function checkMobileCardBingo(card) {
@@ -1069,15 +1182,21 @@
     function renderMobileActiveCard() {
       const container = document.getElementById("mobile-active-card-container");
       const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
-      if (!card) return;
+      if (!container || !card) return;
 
       const hasBingo = checkMobileCardBingo(card);
       const alertBanner = document.getElementById("mobile-bingo-alert");
+      const callBtn = document.getElementById("call-bingo-btn");
+      const callBtnLabel = document.getElementById("call-bingo-btn-label");
+
       if (hasBingo) {
-        document.getElementById("mobile-win-card-num").textContent = String(card.cardNumber).padStart(2, "0");
         alertBanner.classList.remove("hidden");
+        callBtn.className = "w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-amber-400 to-fuchsia-500 text-zinc-950 font-black text-base sm:text-lg tracking-wide transition-all shadow-[0_0_25px_rgba(251,191,36,0.5)] animate-pulse flex items-center justify-center gap-2 cursor-pointer";
+        callBtnLabel.textContent = `CALL BINGO! (CARD #${String(card.cardNumber).padStart(2, "0")})`;
       } else {
         alertBanner.classList.add("hidden");
+        callBtn.className = "w-full py-4 px-6 rounded-2xl bg-zinc-800 border-2 border-zinc-700 text-zinc-400 font-black text-sm sm:text-base tracking-wide transition-all flex items-center justify-center gap-2";
+        callBtnLabel.textContent = "Mark 5 in a Row to Unlock CALL BINGO!";
       }
 
       const cellsHtml = card.grid.map((cell, idx) => {
@@ -1087,11 +1206,11 @@
 
         if (cell.isFree) {
           return `
-            <div class="aspect-square p-1.5 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
-              <span class="absolute top-1 left-1.5 text-[10px] font-black text-zinc-950/80">13.</span>
-              <span class="text-[10px] uppercase tracking-widest font-extrabold">FREE</span>
-              <span class="text-xs sm:text-sm font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
-              <div class="w-8 h-1 bg-zinc-950 -skew-x-12 mt-1.5"></div>
+            <div class="aspect-square p-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
+              <span class="absolute top-1 left-1 text-[9px] font-black text-zinc-950/80">13.</span>
+              <span class="text-[9px] uppercase tracking-widest font-extrabold">FREE</span>
+              <span class="text-[11px] sm:text-xs font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
+              <div class="w-6 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
             </div>
           `;
         }
@@ -1104,24 +1223,24 @@
           <button
             type="button"
             onclick="toggleCardSquare(${card.cardNumber}, ${idx})"
-            class="aspect-square p-1.5 sm:p-2 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
+            class="aspect-square p-1 sm:p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
           >
             <div class="w-full flex items-center justify-between">
-              <span class="text-[11px] font-black ${accent.numColor}">${displayNum}.</span>
+              <span class="text-[10px] font-black ${accent.numColor}">${displayNum}.</span>
               <span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">
                 ${cell.type === "PLAYLIST" ? "♫" : "💬"}
               </span>
             </div>
 
-            <span class="text-[11px] sm:text-xs font-extrabold leading-tight line-clamp-3 my-auto px-0.5">
+            <span class="text-[10px] sm:text-xs font-extrabold leading-tight line-clamp-3 my-auto px-0.5">
               ${cell.title}
             </span>
 
-            <div class="w-7 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-1"></div>
+            <div class="w-6 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5"></div>
 
             ${isMarked ? `
               <div class="absolute inset-0 bg-amber-400/25 pointer-events-none flex items-center justify-center">
-                <span class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-4 border-amber-400 shadow-lg"></span>
+                <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-4 border-amber-400 shadow-lg"></span>
               </div>
             ` : ""}
           </button>
@@ -1129,16 +1248,16 @@
       }).join("");
 
       container.innerHTML = `
-        <div class="retro-flyer-bg border-2 border-zinc-700 rounded-2xl p-4 sm:p-5 shadow-2xl text-white">
-          <div class="text-center mb-3 pb-2.5 border-b border-zinc-700/80">
+        <div class="retro-flyer-bg border-2 border-zinc-700 rounded-2xl p-3 sm:p-4 shadow-2xl text-white">
+          <div class="text-center mb-3 pb-2 border-b border-zinc-700/80">
             <div class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] px-3 py-0.5 uppercase tracking-widest -rotate-1 mb-1">
-              MOBILE PLAYER CARD • #${String(card.cardNumber).padStart(2, '0')}
+              CARD #${String(card.cardNumber).padStart(2, '0')} OF 30
             </div>
             <h4 class="font-flyer-title text-xl sm:text-2xl text-amber-400 leading-none">
               90's–CURRENT BINGO
             </h4>
             <p class="text-[11px] text-zinc-300 mt-1">
-              Tap squares as you hear the <span class="text-cyan-300 font-bold">♫ Artist</span> or <span class="text-fuchsia-300 font-bold">💬 Phrase</span>!
+              Tap squares when you hear the <span class="text-cyan-300 font-bold">♫ Artist</span> or <span class="text-fuchsia-300 font-bold">💬 Phrase</span>!
             </p>
           </div>
 
@@ -1149,20 +1268,78 @@
           <div class="mt-3 pt-2 flex items-center justify-between text-xs text-zinc-400">
             <span class="font-bold text-amber-400">${card.marked.size} / 25 Marked</span>
             <button type="button" onclick="clearMobileCardMarks()" class="text-rose-400 hover:text-rose-300 font-semibold underline">
-              Clear My Card
+              Clear Marks
             </button>
           </div>
         </div>
       `;
     }
 
+    function triggerCallBingo() {
+      const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
+      if (!card) return;
+      if (!checkMobileCardBingo(card)) {
+        showToast("Mark 5 squares in a row, column, or diagonal first!");
+        return;
+      }
+      document.getElementById("modal-bingo-card-number").textContent = `#${String(card.cardNumber).padStart(2, "0")}`;
+      document.getElementById("guest-call-bingo-modal").classList.remove("hidden");
+    }
+
+    function closeCallBingoModal() {
+      document.getElementById("guest-call-bingo-modal").classList.add("hidden");
+    }
+
     function clearMobileCardMarks() {
       const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
       if (!card) return;
       card.marked = new Set([12]);
+      saveGuestState();
       renderCards();
       renderMobileActiveCard();
       showToast(`Cleared marks on Card #${String(activeMobileCardNumber).padStart(2, "0")}`);
+    }
+
+    // =========================================================================
+    // 5C. PARTY PLAYLIST RENDERER
+    // =========================================================================
+    function renderPartyPlaylist() {
+      const container = document.getElementById("playlist-columns");
+      if (!container) return;
+
+      container.innerHTML = PARTY_PLAYLIST_ERAS.map(col => `
+        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex flex-col">
+          <span class="inline-block self-start px-3 py-1 rounded-full border text-xs font-black uppercase tracking-wider mb-4 ${col.badgeColor}">
+            ${col.eraTitle}
+          </span>
+          <ul class="space-y-2 text-xs sm:text-sm text-zinc-200">
+            ${col.tracks.map((track, i) => `
+              <li class="flex items-start gap-2.5 pb-2 border-b border-zinc-900 last:border-none">
+                <span class="text-zinc-500 font-mono text-xs mt-0.5">${String(i + 1).padStart(2, "0")}.</span>
+                <span>${track}</span>
+              </li>
+            `).join("")}
+          </ul>
+        </div>
+      `).join("");
+    }
+
+    function copyFullPlaylist() {
+      const text = PARTY_PLAYLIST_ERAS.map(era =>
+        `=== ${era.eraTitle.toUpperCase()} ===\n` + era.tracks.map((t, i) => `${i + 1}. ${t}`).join("\n")
+      ).join("\n\n");
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showToast("Full 90s–Current Party Playlist copied!");
+      } catch (e) {
+        showToast("Unable to copy playlist.");
+      }
+      document.body.removeChild(textarea);
     }
 
     // =========================================================================
@@ -1172,9 +1349,12 @@
       const viewCards = document.getElementById("view-cards");
       const viewQr = document.getElementById("view-qr");
       const viewCaller = document.getElementById("view-caller");
+      const viewPlaylist = document.getElementById("view-playlist");
+
       const tabCards = document.getElementById("tab-cards");
       const tabQr = document.getElementById("tab-qr");
       const tabCaller = document.getElementById("tab-caller");
+      const tabPlaylist = document.getElementById("tab-playlist");
 
       const activeBtnClass = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-amber-400 text-zinc-950 shadow";
       const inactiveBtnClass = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white";
@@ -1182,9 +1362,12 @@
       viewCards.classList.add("hidden");
       viewQr.classList.add("hidden");
       viewCaller.classList.add("hidden");
+      viewPlaylist.classList.add("hidden");
+
       tabCards.className = inactiveBtnClass;
       tabQr.className = inactiveBtnClass + " flex items-center justify-center gap-1.5";
       tabCaller.className = inactiveBtnClass;
+      tabPlaylist.className = inactiveBtnClass;
 
       if (tab === "cards") {
         viewCards.classList.remove("hidden");
@@ -1193,10 +1376,31 @@
         viewQr.classList.remove("hidden");
         tabQr.className = activeBtnClass + " flex items-center justify-center gap-1.5";
         renderMobileActiveCard();
+      } else if (tab === "playlist") {
+        viewPlaylist.classList.remove("hidden");
+        tabPlaylist.className = activeBtnClass;
       } else {
         viewCaller.classList.remove("hidden");
         tabCaller.className = activeBtnClass;
         renderMasterBoard();
+      }
+    }
+
+    function enablePureGuestMobileMode() {
+      // Hide top navigation and QR generator panel so guests only see their mobile Bingo card
+      const header = document.getElementById("main-header");
+      const qrPanel = document.getElementById("qr-share-panel");
+      if (header) header.classList.add("hidden");
+      if (qrPanel) qrPanel.classList.add("hidden");
+
+      switchTab("qr");
+
+      // Load saved guest card on this phone or assign a random card (1-30) on first scan
+      const hasExisting = loadGuestState();
+      if (!hasExisting) {
+        assignRandomMobileCard(false);
+      } else {
+        renderMobileActiveCard();
       }
     }
 
@@ -1221,14 +1425,22 @@
       renderCards();
       initQRAndMobileHub();
       renderMasterBoard();
+      renderPartyPlaylist();
 
-      // Auto-open Mobile Phone Player view if opened via ?mode=play QR link
       const params = new URLSearchParams(window.location.search);
-      if (params.get("mode") === "play") {
-        switchTab("qr");
-        const cardParam = parseInt(params.get("card"), 10);
-        if (!isNaN(cardParam) && cardParam >= 1 && cardParam <= 30) {
-          selectMobileCard(cardParam);
+      const mode = params.get("mode");
+
+      if (mode === "guest" || mode === "play") {
+        enablePureGuestMobileMode();
+      } else if (mode === "host") {
+        switchTab("caller");
+      } else {
+        // Default landing shows Dual QR codes & random mobile card ready
+        const hasExisting = loadGuestState();
+        if (!hasExisting) {
+          assignRandomMobileCard(false);
+        } else {
+          renderMobileActiveCard();
         }
       }
     });
