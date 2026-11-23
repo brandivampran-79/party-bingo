@@ -40,40 +40,12 @@
           transparent 6px
         );
     }
-
-    /* Print Layout Rules for 30 Individual Bingo Cards */
-    @media print {
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-      }
-      .no-print {
-        display: none !important;
-      }
-      .print-grid {
-        display: block !important;
-      }
-      .bingo-card-sheet {
-        page-break-after: always;
-        break-after: page;
-        box-shadow: none !important;
-        border: 3px solid #18181b !important;
-        margin: 0 auto 1rem auto !important;
-        max-width: 100% !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .bingo-card-sheet:last-child {
-        page-break-after: auto;
-        break-after: auto;
-      }
-    }
   </style>
 </head>
 <body class="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-fuchsia-500 selection:text-white">
 
-  <!-- Top Navigation Bar (Hidden when printing or in Guest Mobile Lock Mode) -->
-  <header id="main-header" class="no-print sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800">
+  <!-- Top Navigation Bar (Hidden in Guest Mobile Lock Mode) -->
+  <header id="main-header" class="sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500 via-amber-400 to-cyan-400 flex items-center justify-center text-zinc-950 font-black text-xl shadow-lg shadow-fuchsia-500/20">
@@ -83,7 +55,7 @@
           <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
             PARTY EARS: 90s–NOW BINGO
           </h1>
-          <p class="text-xs text-zinc-400">Dual QR Mobile Suite • Host Tracker + Guest Random Cards</p>
+          <p class="text-xs text-zinc-400">100% Mobile Dual QR Suite • 50 Unique Digital Cards</p>
         </div>
       </div>
 
@@ -96,9 +68,6 @@
         <button id="tab-caller" onclick="switchTab('caller')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
           Host Tracker
         </button>
-        <button id="tab-cards" onclick="switchTab('cards')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
-          30 Cards
-        </button>
         <button id="tab-playlist" onclick="switchTab('playlist')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white">
           ♫ Party Playlist
         </button>
@@ -107,7 +76,7 @@
   </header>
 
   <!-- Toast Notification Box (Replaces alert) -->
-  <div id="toast-box" class="no-print fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+  <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
     <div class="bg-zinc-800 border border-amber-500/50 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3">
       <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
       <span id="toast-message" class="text-sm font-semibold">Action completed</span>
@@ -115,51 +84,21 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- VIEW 1: 30 PLAYER CARDS & PRINT GENERATOR                  -->
-  <!-- ========================================================= -->
-  <main id="view-cards" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div class="no-print bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col lg:flex-row items-center justify-between gap-4">
-      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-        <label for="card-filter" class="text-xs font-bold uppercase tracking-wider text-zinc-400">Filter View:</label>
-        <select id="card-filter" onchange="renderCards()" class="bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
-          <option value="all">All 30 Variations (Cards #01–#30)</option>
-        </select>
-
-        <button onclick="regenerateDeck()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs sm:text-sm font-semibold transition border border-zinc-700">
-          ↻ Reshuffle Deck
-        </button>
-      </div>
-
-      <div class="flex items-center gap-3 w-full lg:w-auto justify-end">
-        <button onclick="printAllCards()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 font-black text-sm shadow-lg transition flex items-center justify-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-          Print / Save All 30 Cards (PDF)
-        </button>
-      </div>
-    </div>
-
-    <!-- Container for the 30 Generated Cards -->
-    <div id="cards-container" class="print-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- Cards populated via JavaScript -->
-    </div>
-  </main>
-
-  <!-- ========================================================= -->
-  <!-- VIEW 2: DUAL QR CODES (HOST VS GUEST) & MOBILE PLAYER     -->
+  <!-- VIEW 1: DUAL QR CODES (HOST VS GUEST) & MOBILE PLAYER     -->
   <!-- ========================================================= -->
   <main id="view-qr" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     
     <!-- Top Section: Dual QR Code Hub (Hidden when a Guest scans in via ?mode=guest) -->
-    <div id="qr-share-panel" class="no-print bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 mb-8 shadow-2xl">
+    <div id="qr-share-panel" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 mb-8 shadow-2xl">
       <div class="text-center max-w-2xl mx-auto mb-6">
         <span class="inline-block px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 text-xs font-bold uppercase tracking-wider mb-2">
-          100% Mobile Party Setup
+          100% Mobile Party Setup • 50 Unique Cards
         </span>
         <h2 class="text-2xl sm:text-3xl font-black text-white">
           Two Dedicated QR Codes: Host vs. Guests
         </h2>
         <p class="text-xs sm:text-sm text-zinc-400 mt-1">
-          Scan the <strong>Host QR</strong> on your phone to unlock the full Tracker & Verifier. Display the <strong>Guest QR</strong> for party guests—scanning it immediately deals them a random card with mobile daubing and a Call BINGO button.
+          Scan the <strong>Host QR</strong> on your phone to unlock the Tracker & Verifier. Display the <strong>Guest QR</strong> for party guests—each scan deals a unique mobile card (#01–#50) with tap-to-daub and a Call BINGO button.
         </p>
       </div>
 
@@ -207,9 +146,9 @@
           <div class="bg-white p-3.5 rounded-2xl border-4 border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.25)]">
             <div id="qrcode-guest-canvas" class="w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center"></div>
           </div>
-          <h3 class="text-base font-extrabold text-white mt-4">Deals a Random Card on Phone</h3>
+          <h3 class="text-base font-extrabold text-white mt-4">Deals a Unique Card (#01–#50)</h3>
           <p class="text-xs text-zinc-400 mt-1 max-w-xs">
-            Opens straight to a clean mobile Bingo card (no host controls). Guests tap squares to daub and hit <strong>CALL BINGO!</strong> when they get 5 in a row.
+            Opens straight to a clean mobile Bingo card (no host controls). Each guest gets a different card variation to daub and call <strong>BINGO!</strong>
           </p>
           <a id="test-guest-link" href="?mode=guest" class="mt-3 text-xs font-bold text-cyan-400 hover:text-cyan-300 underline">
             Preview Guest Phone Screen →
@@ -226,7 +165,7 @@
           </div>
           <h3 class="text-base font-extrabold text-white mt-4">Full Host Tracker & Verifier</h3>
           <p class="text-xs text-zinc-400 mt-1 max-w-xs">
-            Scan with your phone to log songs & room phrases as they happen, verify winning Card #s, view all 30 cards, and check the party playlist.
+            Scan with your phone to log songs & room phrases as they happen, verify winning Card #s (1–50), and check the party playlist.
           </p>
           <a id="test-host-link" href="?mode=host" class="mt-3 text-xs font-bold text-amber-400 hover:text-amber-300 underline">
             Open Host Mobile Tracker →
@@ -345,10 +284,10 @@
         <!-- Winner Card Verifier -->
         <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
           <h3 class="text-sm font-extrabold uppercase tracking-wider text-white mb-1">Verify a Player's "BINGO!"</h3>
-          <p class="text-xs text-zinc-400 mb-3">Enter the player's Card # (1–30) to check their card against your logged songs & phrases.</p>
+          <p class="text-xs text-zinc-400 mb-3">Enter the player's Card # (1–50) to check their card against your logged songs & phrases.</p>
           
           <div class="flex gap-2">
-            <input type="number" id="verify-card-input" min="1" max="30" placeholder="Card # (1-30)" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" />
+            <input type="number" id="verify-card-input" min="1" max="50" placeholder="Card # (1-50)" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" />
             <button onclick="verifyPlayerCard()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition shrink-0">
               Check
             </button>
@@ -503,15 +442,15 @@
     // =========================================================================
     // 2. APPLICATION STATE & SEEDED RANDOMIZER
     // =========================================================================
-    let generatedCards = []; // Array of 30 card objects
+    const TOTAL_CARDS = 50;
+    let generatedCards = []; // Array of 50 card objects
     let calledItemIds = new Set();
     let callHistory = []; // Ordered list of item IDs called
     let activeMobileCardNumber = 1; // Currently selected card in Mobile Phone Mode
     let hostBoardFilter = "ALL"; // ALL | PLAYLIST | OVERHEARD
-    const HOST_STORAGE_KEY = "urban_culture_bingo_host_v2";
-    const GUEST_STORAGE_KEY = "urban_culture_bingo_guest_v2";
-
-    // Curated Party Playlist (Matches all 36 Bingo Card Artists + Bonus Crowd Hits)
+    const HOST_STORAGE_KEY = "urban_culture_bingo_host_v3";
+    const GUEST_STORAGE_KEY = "urban_culture_bingo_guest_v3";
+    const USED_DECK_STORAGE_KEY = "urban_culture_bingo_dealt_v3";
     const PARTY_PLAYLIST_ERAS = [
       {
         eraTitle: "90s Golden Era R&B & Hip-Hop",
@@ -608,12 +547,12 @@
       };
     }
 
-    function generate30UniqueCards(seedOffset = 0) {
+    function generateUniqueCards(totalCount = TOTAL_CARDS, seedOffset = 0) {
       const cards = [];
       const usedSignatures = new Set();
       let attemptSeed = 902026 + seedOffset;
 
-      while (cards.length < 30) {
+      while (cards.length < totalCount) {
         const rand = mulberry32(attemptSeed++);
         const poolCopy = [...CULTURE_ITEMS];
 
@@ -651,138 +590,12 @@
     }
 
     // =========================================================================
-    // 3. RENDER 30 FLYER-STYLE CARDS
+    // 3. MOBILE CARD SQUARE INTERACTION
     // =========================================================================
-    function populateCardDropdown() {
-      const select = document.getElementById("card-filter");
-      if (!select) return;
-      select.innerHTML = `<option value="all">All 30 Variations (Cards #01–#30)</option>`;
-      for (let i = 1; i <= 30; i++) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = `Card #${String(i).padStart(2, "0")}`;
-        select.appendChild(opt);
-      }
-    }
-
     function getEraBadgeStyle(type) {
       if (type === "PLAYLIST") return "text-cyan-300";
       if (type === "OVERHEARD") return "text-fuchsia-300";
       return "text-amber-300";
-    }
-
-    function renderCards() {
-      const container = document.getElementById("cards-container");
-      if (!container) return;
-      const filterEl = document.getElementById("card-filter");
-      const filterVal = filterEl ? filterEl.value : "all";
-
-      const cardsToRender = filterVal === "all"
-        ? generatedCards
-        : generatedCards.filter(c => c.cardNumber === Number(filterVal));
-
-      container.innerHTML = cardsToRender.map(card => {
-        const cellsHtml = card.grid.map((cell, idx) => {
-          const isMarked = card.marked.has(idx);
-          const displayNum = idx + 1;
-          const accent = NEON_BAR_CLASSES[idx % NEON_BAR_CLASSES.length];
-
-          if (cell.isFree) {
-            return `
-              <div class="aspect-square p-1.5 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
-                <span class="absolute top-1 left-1.5 text-[10px] font-black text-zinc-950/80">13.</span>
-                <span class="text-[9px] uppercase tracking-widest font-extrabold">FREE SPACE</span>
-                <span class="text-xs sm:text-sm font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
-                <div class="w-7 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
-              </div>
-            `;
-          }
-
-          const interactiveClass = isMarked
-            ? "bg-fuchsia-950/80 border-amber-400 ring-2 ring-amber-400 text-white"
-            : "bg-zinc-950/90 hover:bg-zinc-900 border-zinc-700/80 text-white";
-
-          return `
-            <button
-              type="button"
-              onclick="toggleCardSquare(${card.cardNumber}, ${idx})"
-              class="aspect-square p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
-            >
-              <div class="w-full flex items-center justify-between">
-                <span class="text-[11px] font-black ${accent.numColor}">${displayNum}.</span>
-                <span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">
-                  ${cell.type === "PLAYLIST" ? "♫ SONG" : "💬 HEAR"}
-                </span>
-              </div>
-
-              <span class="text-[11px] sm:text-xs font-extrabold leading-tight line-clamp-3 my-auto px-0.5">
-                ${cell.title}
-              </span>
-
-              <div class="w-8 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5"></div>
-
-              ${isMarked ? `
-                <div class="no-print absolute inset-0 bg-amber-400/20 pointer-events-none flex items-center justify-center">
-                  <span class="w-9 h-9 rounded-full border-4 border-amber-400/85"></span>
-                </div>
-              ` : ""}
-            </button>
-          `;
-        }).join("");
-
-        return `
-          <article class="bingo-card-sheet retro-flyer-bg border-2 border-zinc-700 rounded-3xl p-4 sm:p-5 shadow-2xl text-white relative overflow-hidden">
-            
-            <!-- Top Flyer Decorative Row: Cassette Badge + Header + Crown -->
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <!-- Retro Cassette Mini Badge -->
-              <div class="hidden sm:flex flex-col items-center justify-center bg-zinc-200 text-zinc-950 rounded-md px-2 py-1 border-2 border-zinc-800 -rotate-6 shadow">
-                <span class="text-[7px] font-black tracking-tighter uppercase">GOOD MUSIC</span>
-                <div class="flex items-center gap-1 my-0.5">
-                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-900 inline-block"></span>
-                  <span class="w-3 h-1.5 bg-amber-400 inline-block"></span>
-                  <span class="w-2.5 h-2.5 rounded-full bg-zinc-900 inline-block"></span>
-                </div>
-                <span class="text-[7px] font-extrabold uppercase">90s–NOW</span>
-              </div>
-
-              <!-- Center Stacked Flyer Title -->
-              <div class="text-center flex-1">
-                <div class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] sm:text-xs px-3 py-0.5 uppercase tracking-widest -rotate-1 mb-1">
-                  PARTY EARS EDITION • CARD #${String(card.cardNumber).padStart(2, '0')}
-                </div>
-                <h2 class="font-flyer-title text-2xl sm:text-3xl text-amber-400 leading-none drop-shadow-[0_2px_0_rgba(0,0,0,0.9)]">
-                  90's–CURRENT
-                </h2>
-                <div class="font-flyer-title text-xl sm:text-2xl text-fuchsia-500 leading-none -mt-0.5 drop-shadow-[0_2px_0_rgba(0,0,0,0.9)]">
-                  CULTURE BINGO
-                </div>
-                <div class="inline-block border border-amber-400/80 text-amber-300 text-[9px] font-extrabold tracking-[0.25em] px-3 py-0.5 mt-1 uppercase">
-                  HEAR THE SONG OR PHRASE & MARK IT
-                </div>
-              </div>
-
-              <!-- Retro Crown SVG -->
-              <div class="hidden sm:flex items-center justify-center rotate-12 pt-1">
-                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 18h18M4 15l2-9 6 5 6-5 2 9H4z" />
-                </svg>
-              </div>
-            </div>
-
-            <!-- 5x5 Numbered Grid -->
-            <div class="grid grid-cols-5 border border-zinc-700 bg-zinc-950/60">
-              ${cellsHtml}
-            </div>
-
-            <!-- Card Footer -->
-            <div class="mt-3 pt-2 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
-              <span><strong class="text-cyan-300">♫ SONG:</strong> Artist plays on speakers</span>
-              <span><strong class="text-fuchsia-300">💬 HEAR:</strong> Said in the room</span>
-            </div>
-          </article>
-        `;
-      }).join("");
     }
 
     function toggleCardSquare(cardNumber, cellIdx) {
@@ -796,27 +609,10 @@
         card.marked.add(cellIdx);
       }
 
-      renderCards();
       if (cardNumber === activeMobileCardNumber) {
         saveGuestState();
         renderMobileActiveCard();
       }
-    }
-
-    function regenerateDeck() {
-      generate30UniqueCards(Math.floor(Math.random() * 10000));
-      renderCards();
-      renderMobileActiveCard();
-      showToast("Generated 30 fresh shuffled Bingo cards!");
-    }
-
-    function printAllCards() {
-      const filterSelect = document.getElementById("card-filter");
-      if (filterSelect) filterSelect.value = "all";
-      renderCards();
-      setTimeout(() => {
-        window.print();
-      }, 150);
     }
 
     // =========================================================================
@@ -982,9 +778,9 @@
 
       resultBox.classList.remove("hidden");
 
-      if (isNaN(cardNum) || cardNum < 1 || cardNum > 30) {
+      if (isNaN(cardNum) || cardNum < 1 || cardNum > TOTAL_CARDS) {
         resultBox.className = "mt-3 rounded-xl p-3.5 text-xs bg-rose-500/15 border border-rose-500/40 text-rose-300 font-semibold";
-        resultBox.textContent = "Please enter a valid Card Number between 1 and 30.";
+        resultBox.textContent = `Please enter a valid Card Number between 1 and ${TOTAL_CARDS}.`;
         return;
       }
 
@@ -1048,7 +844,7 @@
         const raw = localStorage.getItem(GUEST_STORAGE_KEY);
         if (!raw) return false;
         const parsed = JSON.parse(raw);
-        if (parsed && parsed.cardNumber >= 1 && parsed.cardNumber <= 30) {
+        if (parsed && parsed.cardNumber >= 1 && parsed.cardNumber <= TOTAL_CARDS) {
           activeMobileCardNumber = parsed.cardNumber;
           const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
           if (card && Array.isArray(parsed.marked)) {
@@ -1061,6 +857,43 @@
         // Ignore storage errors
       }
       return false;
+    }
+
+    function pickDistinctCardNumber(excludeNum = null) {
+      // Combine time-based entropy + crypto randomness + locally tracked dealt cards so each scan gets a distinct card
+      let dealtHistory = [];
+      try {
+        const raw = localStorage.getItem(USED_DECK_STORAGE_KEY);
+        if (raw) dealtHistory = JSON.parse(raw);
+      } catch (e) {
+        dealtHistory = [];
+      }
+
+      const allNums = Array.from({ length: TOTAL_CARDS }, (_, i) => i + 1);
+      let available = allNums.filter(n => !dealtHistory.includes(n) && n !== excludeNum);
+
+      if (available.length === 0) {
+        dealtHistory = [];
+        available = allNums.filter(n => n !== excludeNum);
+      }
+
+      let randomIndex = 0;
+      if (window.crypto && window.crypto.getRandomValues) {
+        const arr = new Uint32Array(1);
+        window.crypto.getRandomValues(arr);
+        randomIndex = arr[0] % available.length;
+      } else {
+        randomIndex = Math.floor((Math.random() * 100000 + Date.now()) % available.length);
+      }
+
+      const chosen = available[randomIndex];
+      dealtHistory.push(chosen);
+      try {
+        localStorage.setItem(USED_DECK_STORAGE_KEY, JSON.stringify(dealtHistory));
+      } catch (e) {
+        // Ignore storage errors
+      }
+      return chosen;
     }
 
     function getCleanBaseUrl() {
@@ -1159,14 +992,14 @@
     }
 
     function assignRandomMobileCard(notify = false) {
-      const randomNum = Math.floor(Math.random() * 30) + 1;
+      const randomNum = pickDistinctCardNumber(activeMobileCardNumber);
       const card = generatedCards.find(c => c.cardNumber === randomNum);
       if (card) {
         card.marked = new Set([12]);
       }
       selectMobileCard(randomNum);
       if (notify) {
-        showToast(`Dealt Random Card #${String(randomNum).padStart(2, "0")}!`);
+        showToast(`Dealt Card #${String(randomNum).padStart(2, "0")} of ${TOTAL_CARDS}!`);
       }
     }
 
@@ -1206,10 +1039,10 @@
 
         if (cell.isFree) {
           return `
-            <div class="aspect-square p-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
-              <span class="absolute top-1 left-1 text-[9px] font-black text-zinc-950/80">13.</span>
-              <span class="text-[9px] uppercase tracking-widest font-extrabold">FREE</span>
-              <span class="text-[11px] sm:text-xs font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
+            <div class="min-h-[68px] sm:aspect-square p-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
+              <span class="absolute top-0.5 left-1 text-[9px] font-black text-zinc-950/80">13.</span>
+              <span class="text-[8px] uppercase tracking-wider font-extrabold mt-2">FREE</span>
+              <span class="text-[10px] sm:text-xs font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
               <div class="w-6 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
             </div>
           `;
@@ -1223,20 +1056,20 @@
           <button
             type="button"
             onclick="toggleCardSquare(${card.cardNumber}, ${idx})"
-            class="aspect-square p-1 sm:p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
+            class="min-h-[68px] sm:aspect-square p-1 sm:p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
           >
             <div class="w-full flex items-center justify-between">
-              <span class="text-[10px] font-black ${accent.numColor}">${displayNum}.</span>
+              <span class="text-[9px] sm:text-[10px] font-black ${accent.numColor}">${displayNum}.</span>
               <span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">
                 ${cell.type === "PLAYLIST" ? "♫" : "💬"}
               </span>
             </div>
 
-            <span class="text-[10px] sm:text-xs font-extrabold leading-tight line-clamp-3 my-auto px-0.5">
+            <span class="text-[9.5px] sm:text-[11px] font-extrabold leading-[1.15] break-words w-full my-auto px-0.5">
               ${cell.title}
             </span>
 
-            <div class="w-6 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5"></div>
+            <div class="w-6 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5 shrink-0"></div>
 
             ${isMarked ? `
               <div class="absolute inset-0 bg-amber-400/25 pointer-events-none flex items-center justify-center">
@@ -1251,7 +1084,7 @@
         <div class="retro-flyer-bg border-2 border-zinc-700 rounded-2xl p-3 sm:p-4 shadow-2xl text-white">
           <div class="text-center mb-3 pb-2 border-b border-zinc-700/80">
             <div class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] px-3 py-0.5 uppercase tracking-widest -rotate-1 mb-1">
-              CARD #${String(card.cardNumber).padStart(2, '0')} OF 30
+              CARD #${String(card.cardNumber).padStart(2, '0')} OF ${TOTAL_CARDS}
             </div>
             <h4 class="font-flyer-title text-xl sm:text-2xl text-amber-400 leading-none">
               90's–CURRENT BINGO
@@ -1295,7 +1128,6 @@
       if (!card) return;
       card.marked = new Set([12]);
       saveGuestState();
-      renderCards();
       renderMobileActiveCard();
       showToast(`Cleared marks on Card #${String(activeMobileCardNumber).padStart(2, "0")}`);
     }
@@ -1346,12 +1178,10 @@
     // 6. NAVIGATION & TOAST HELPERS
     // =========================================================================
     function switchTab(tab) {
-      const viewCards = document.getElementById("view-cards");
       const viewQr = document.getElementById("view-qr");
       const viewCaller = document.getElementById("view-caller");
       const viewPlaylist = document.getElementById("view-playlist");
 
-      const tabCards = document.getElementById("tab-cards");
       const tabQr = document.getElementById("tab-qr");
       const tabCaller = document.getElementById("tab-caller");
       const tabPlaylist = document.getElementById("tab-playlist");
@@ -1359,20 +1189,15 @@
       const activeBtnClass = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-amber-400 text-zinc-950 shadow";
       const inactiveBtnClass = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-zinc-400 hover:text-white";
 
-      viewCards.classList.add("hidden");
       viewQr.classList.add("hidden");
       viewCaller.classList.add("hidden");
       viewPlaylist.classList.add("hidden");
 
-      tabCards.className = inactiveBtnClass;
       tabQr.className = inactiveBtnClass + " flex items-center justify-center gap-1.5";
       tabCaller.className = inactiveBtnClass;
       tabPlaylist.className = inactiveBtnClass;
 
-      if (tab === "cards") {
-        viewCards.classList.remove("hidden");
-        tabCards.className = activeBtnClass;
-      } else if (tab === "qr") {
+      if (tab === "qr") {
         viewQr.classList.remove("hidden");
         tabQr.className = activeBtnClass + " flex items-center justify-center gap-1.5";
         renderMobileActiveCard();
@@ -1395,7 +1220,7 @@
 
       switchTab("qr");
 
-      // Load saved guest card on this phone or assign a random card (1-30) on first scan
+      // Load saved guest card on this phone or assign a distinct card (1-50) on first scan
       const hasExisting = loadGuestState();
       if (!hasExisting) {
         assignRandomMobileCard(false);
@@ -1420,9 +1245,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("pool-count").textContent = CULTURE_ITEMS.length;
       loadHostProgress();
-      generate30UniqueCards();
-      populateCardDropdown();
-      renderCards();
+      generateUniqueCards(TOTAL_CARDS);
       initQRAndMobileHub();
       renderMasterBoard();
       renderPartyPlaylist();
