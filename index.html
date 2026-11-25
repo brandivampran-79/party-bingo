@@ -1,46 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Party-Ears Bingo (Dual QR Mobile Suite)</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- QR Code Generator Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- Google Fonts: Inter & Archivo Black -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<!-- Firebase SDKs for Cross-Device Real-Time Sync (Host Tracker <-> Guest Phones) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, addDoc, deleteDoc, getDocs, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #09090b;
-      color: #fafafa;
+    window.__bingoCloud = {
+      enabled: false,
+      db: null,
+      auth: null,
+      user: null,
+      appId: typeof __app_id !== "undefined" ? __app_id : "party-ears-bingo-default"
+    };
+
+    async function initCloudSync() {
+      try {
+        if (typeof __firebase_config === "undefined" || !__firebase_config) return;
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        window.__bingoCloud.enabled = true;
+        window.__bingoCloud.db = db;
+        window.__bingoCloud.auth = auth;
+        window.__bingoCloud.user = auth.currentUser;
+        window.__bingoCloud.fs = { doc, setDoc, getDoc, addDoc, deleteDoc, getDocs, onSnapshot, collection };
+
+        if (typeof window.onCloudSyncReady === "function") {
+          window.onCloudSyncReady();
+        }
+      } catch (err) {
+        console.warn("Running in local-only mode:", err);
+      }
     }
 
-    .font-flyer-title {
-      font-family: 'Archivo Black', sans-serif;
-      letter-spacing: -0.03em;
-    }
-
-    /* 90s Retro R&B/Hip-Hop Flyer Aesthetic */
-    .retro-flyer-bg {
-      background-color: #111115;
-      background-image:
-        radial-gradient(circle at 12% 14%, rgba(236, 72, 153, 0.24) 0%, transparent 42%),
-        radial-gradient(circle at 88% 18%, rgba(34, 211, 238, 0.22) 0%, transparent 42%),
-        radial-gradient(circle at 50% 88%, rgba(168, 85, 247, 0.22) 0%, transparent 48%),
-        repeating-linear-gradient(
-          -45deg,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 2px,
-          transparent 2px,
-          transparent 6px
-        );
-    }
-  </style>
+    initCloudSync();
+  </script>
 </head>
 <body class="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-fuchsia-500 selection:text-white">
 
@@ -153,93 +154,17 @@
           <p class="text-xs text-zinc-400 mt-1 max-w-xs">
             Opens straight to a clean mobile Bingo card (no host controls). Each guest gets a different card variation to daub and call <strong>BINGO!</strong>
           </p>
-          <a id="test-guest-link" href="?mode=guest" class="mt-3 text-xs font-bold text-cyan-400 hover:text-cyan-300 underline">
-            Preview Guest Phone Screen →
-          </a>
-        </div>
-
-        <!-- QR 2: HOST QR CODE -->
-        <div class="bg-zinc-950 border-2 border-amber-500/40 rounded-2xl p-6 flex flex-col items-center text-center shadow-lg">
-          <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-widest mb-3">
-            2. Host QR Code (Just For You)
-          </span>
-          <div class="bg-white p-3.5 rounded-2xl border-4 border-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.25)]">
-            <div id="qrcode-host-canvas" class="w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center"></div>
-          </div>
-          <h3 class="text-base font-extrabold text-white mt-4">Full Host Tracker & Verifier</h3>
-          <p class="text-xs text-zinc-400 mt-1 max-w-xs">
-            Scan with your phone to log songs & room phrases as they happen, verify winning Card #s (1–50), and check the party playlist.
-          </p>
-          <a id="test-host-link" href="?mode=host" class="mt-3 text-xs font-bold text-amber-400 hover:text-amber-300 underline">
-            Open Host Mobile Tracker →
-          </a>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Bottom Section: Clean Mobile Player Screen (What Guests See Upon Scanning) -->
-    <div id="guest-mobile-container" class="bg-zinc-900/95 border border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-2xl max-w-lg mx-auto">
-      
-      <!-- Guest Name Entry Gate (Shown before dealing a random card) -->
-      <div id="guest-name-gate" class="hidden py-6 px-2 text-center">
-        <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-amber-400 via-fuchsia-500 to-cyan-400 flex items-center justify-center text-zinc-950 font-black text-2xl shadow-lg">
-          🎤
-        </div>
-        <span class="text-[11px] font-black uppercase tracking-widest text-cyan-400 block mb-1">
-          Welcome to Party-Ears Bingo
-        </span>
-        <h3 class="text-2xl font-black text-white mb-2">
-          Enter Your Name to Get Your Card
-        </h3>
-        <p class="text-xs text-zinc-400 mb-5 max-w-xs mx-auto">
-          We'll deal you a unique mobile Bingo card (#01–#50) and alert the host when you hit 5 in a row!
-        </p>
-        <form onsubmit="submitGuestName(event)" class="space-y-3 max-w-xs mx-auto">
-          <input
-            type="text"
-            id="guest-name-input"
-            maxlength="28"
-            required
-            placeholder="Your First Name / Nickname..."
-            class="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-amber-400 rounded-xl px-4 py-3 text-sm text-white font-bold text-center focus:outline-none"
-          />
-          <button
-            type="submit"
-            class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 font-black text-sm shadow-lg transition cursor-pointer"
-          >
-            Deal My Random Bingo Card →
-          </button>
-        </form>
-      </div>
-
-      <!-- Active Guest Card Wrapper (Shown after name is entered) -->
-      <div id="guest-card-wrapper">
-        <!-- Guest Mobile Top Bar -->
-        <div class="flex items-center justify-between gap-2 pb-4 mb-4 border-b border-zinc-800">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-cyan-400 block">
-              Player: <span id="guest-display-name" class="text-amber-300">Guest</span>
-            </span>
-            <h3 class="text-lg font-black text-white">Party-Ears Bingo</h3>
-          </div>
-
-          <div class="flex items-center gap-2">
+          <div class="mt-3 flex flex-col sm:flex-row items-center gap-2">
             <button
               type="button"
-              onclick="changeGuestName()"
-              class="px-2.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 font-bold text-xs transition"
-              title="Edit Player Name"
+              onclick="enableStandaloneQRDisplayMode()"
+              class="px-3.5 py-2 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-zinc-950 font-black text-xs shadow transition cursor-pointer"
             >
-              ✏️ Name
+              📱 Open Standalone iPad QR Display
             </button>
-            <button
-              type="button"
-              onclick="assignRandomMobileCard(true)"
-              class="px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-bold text-xs transition"
-            >
-              🎲 New Card
-            </button>
+            <a id="test-guest-link" href="?mode=guest" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 underline">
+              Preview Guest Screen →
+            </a>
           </div>
         </div>
 
@@ -325,42 +250,42 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      
-      <!-- Left Column: Host Mobile Controls & Winner Verifier -->
-      <div class="lg:col-span-5 space-y-6">
-        
-        <!-- Quick Host Guide & Random Draw -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Host Mobile Tracker</span>
-            <span id="called-counter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300">0 / 60 Logged</span>
-          </div>
+    <!-- STANDALONE IPAD ENTRANCE QR DISPLAY (Hidden unless ?mode=qr or "Open Standalone iPad QR Display" is clicked) -->
+    <div id="standalone-ipad-qr-view" class="hidden min-h-[85vh] flex flex-col items-center justify-center text-center px-4 py-8">
+      <div class="retro-flyer-bg border-4 border-cyan-400 rounded-[2.5rem] p-8 sm:p-12 max-w-lg w-full shadow-[0_0_70px_rgba(34,211,238,0.35)] flex flex-col items-center">
+        <span class="px-4 py-1.5 rounded-full bg-fuchsia-500/20 border border-fuchsia-400/50 text-fuchsia-300 text-xs sm:text-sm font-black uppercase tracking-widest mb-3">
+          90s–Current R&B & Hip-Hop Edition
+        </span>
+        <h2 class="font-flyer-title text-4xl sm:text-5xl text-amber-400 leading-none mb-2">
+          PARTY-EARS BINGO
+        </h2>
+        <p class="text-sm sm:text-base text-zinc-200 font-semibold mb-7 max-w-sm">
+          Point your phone camera below, enter your name, and get your own unique mobile Bingo card!
+        </p>
 
-          <div id="current-call-display" class="min-h-[120px] rounded-xl bg-zinc-950 border border-zinc-800 p-4 flex flex-col items-center justify-center text-center mb-4">
-            <span class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold mb-1">Tap Any Tile on the Board to Log It</span>
-            <h2 class="text-lg sm:text-xl font-black text-white">Track Songs & Overheard Phrases</h2>
-            <p class="text-xs text-zinc-400 mt-1">Auto-saved to your phone • Or draw a random prompt below</p>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="drawNextItem()" class="py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-95 text-zinc-950 font-black text-xs sm:text-sm shadow-lg transition">
-              🎲 Random Draw
-            </button>
-            <button onclick="resetCallerBoard()" class="py-3 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm border border-zinc-700 transition">
-              Reset Log
-            </button>
-          </div>
+        <div class="bg-white p-5 rounded-3xl border-4 border-amber-400 shadow-[0_0_40px_rgba(251,191,36,0.4)]">
+          <div id="qrcode-standalone-canvas" class="w-60 h-60 sm:w-72 sm:h-72 flex items-center justify-center"></div>
         </div>
 
-        <!-- Winner Card Verifier -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
-          <h3 class="text-sm font-extrabold uppercase tracking-wider text-white mb-1">Verify a Player's "BINGO!"</h3>
-          <p class="text-xs text-zinc-400 mb-3">Enter the player's Card # (1–50) to check their card against your logged songs & phrases.</p>
-          
-          <div class="flex gap-2">
-            <input type="number" id="verify-card-input" min="1" max="50" placeholder="Card # (1-50)" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" />
-            <button onclick="verifyPlayerCard()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition shrink-0">
+        <div class="mt-6 px-8 py-2.5 rounded-full bg-cyan-400 text-zinc-950 font-flyer-title text-2xl sm:text-3xl tracking-wider uppercase shadow-xl shadow-cyan-400/30">
+          SCAN ME!
+        </div>
+
+        <p class="text-xs text-zinc-400 mt-5">
+          50 Unique Cards • Tap Squares to Daub • Hit 5 in a Row to Win
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onclick="exitStandaloneQRDisplayMode()"
+        class="mt-6 text-xs font-semibold text-zinc-600 hover:text-zinc-300 underline transition"
+      >
+        Exit Kiosk Display
+      </button>
+    </div>
+
+    <!-- Bottom Section: Clean Mobile Player Screen (What Guests See Upon Scanning) -->
               Check
             </button>
           </div>
@@ -933,7 +858,7 @@
         return;
       }
       guestPlayerName = rawName;
-      assignRandomMobileCard(true);
+      assignUniqueCardForPlayer(rawName, true);
       updateGuestGateUI();
     }
 
@@ -943,44 +868,98 @@
       guestPlayerName = "";
       updateGuestGateUI();
     }
-
-    function saveGuestState() {
-      try {
-        const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
-        if (!card) return;
-        localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify({
-          playerName: guestPlayerName,
-          cardNumber: activeMobileCardNumber,
-          marked: Array.from(card.marked)
-        }));
-      } catch (e) {
-        // Ignore storage errors
+    function hashPlayerNameToCard(name) {
+      // Deterministic hash so every distinct guest name maps to a distinct card #1..50
+      const normalized = name.trim().toLowerCase();
+      let hash = 2166136261;
+      for (let i = 0; i < normalized.length; i++) {
+        hash ^= normalized.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
       }
+      return (Math.abs(hash) % TOTAL_CARDS) + 1;
     }
 
-    function loadGuestState() {
-      try {
-        const raw = localStorage.getItem(GUEST_STORAGE_KEY);
-        if (!raw) return false;
-        const parsed = JSON.parse(raw);
-        if (parsed && parsed.playerName && parsed.cardNumber >= 1 && parsed.cardNumber <= TOTAL_CARDS) {
-          guestPlayerName = parsed.playerName;
-          activeMobileCardNumber = parsed.cardNumber;
-          const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
-          if (card && Array.isArray(parsed.marked)) {
-            card.marked = new Set(parsed.marked);
-            card.marked.add(12);
+    async function assignUniqueCardForPlayer(playerName, notify = false) {
+      let chosenCardNum = hashPlayerNameToCard(playerName);
+
+      // If Cloud Sync is active, check claimed cards across all phones to guarantee zero collisions
+      const cloud = window.__bingoCloud;
+      if (cloud && cloud.enabled && cloud.user && cloud.fs) {
+        try {
+          const { collection, getDocs, doc, setDoc } = cloud.fs;
+          const claimsCol = collection(cloud.db, "artifacts", cloud.appId, "public", "data", "claimed_cards");
+          const snap = await getDocs(claimsCol);
+          const takenCards = new Set();
+          let existingForSameName = null;
+
+          snap.forEach(d => {
+            const data = d.data();
+            if (data && typeof data.cardNumber === "number") {
+              takenCards.add(data.cardNumber);
+              if (data.normalizedName === playerName.trim().toLowerCase()) {
+                existingForSameName = data.cardNumber;
+              }
+            }
+          });
+
+          if (existingForSameName) {
+            chosenCardNum = existingForSameName;
+          } else if (takenCards.has(chosenCardNum)) {
+            for (let offset = 1; offset <= TOTAL_CARDS; offset++) {
+              const candidate = ((chosenCardNum - 1 + offset) % TOTAL_CARDS) + 1;
+              if (!takenCards.has(candidate)) {
+                chosenCardNum = candidate;
+                break;
+              }
+            }
           }
-          return true;
+
+          await setDoc(doc(claimsCol, `card_${chosenCardNum}`), {
+            cardNumber: chosenCardNum,
+            playerName: playerName.trim(),
+            normalizedName: playerName.trim().toLowerCase(),
+            claimedAt: Date.now()
+          });
+        } catch (err) {
+          // Fallback to local collision check below
         }
-      } catch (e) {
-        // Ignore storage errors
+      } else {
+        // Local fallback collision avoidance
+        let dealtHistory = [];
+        try {
+          const raw = localStorage.getItem(USED_DECK_STORAGE_KEY);
+          if (raw) dealtHistory = JSON.parse(raw);
+        } catch (e) {
+          dealtHistory = [];
+        }
+        if (dealtHistory.includes(chosenCardNum) && dealtHistory.length < TOTAL_CARDS) {
+          for (let offset = 1; offset <= TOTAL_CARDS; offset++) {
+            const candidate = ((chosenCardNum - 1 + offset) % TOTAL_CARDS) + 1;
+            if (!dealtHistory.includes(candidate)) {
+              chosenCardNum = candidate;
+              break;
+            }
+          }
+        }
+        if (!dealtHistory.includes(chosenCardNum)) {
+          dealtHistory.push(chosenCardNum);
+          try {
+            localStorage.setItem(USED_DECK_STORAGE_KEY, JSON.stringify(dealtHistory));
+          } catch (e) {}
+        }
       }
-      return false;
+
+      const card = generatedCards.find(c => c.cardNumber === chosenCardNum);
+      if (card) {
+        card.marked = new Set([12]);
+      }
+      selectMobileCard(chosenCardNum);
+      if (notify) {
+        showToast(`${playerName}, you got unique Card #${String(chosenCardNum).padStart(2, "0")}!`);
+      }
     }
 
     function pickDistinctCardNumber(excludeNum = null) {
-      // Combine time-based entropy + crypto randomness + locally tracked dealt cards so each scan gets a distinct card
       let dealtHistory = [];
       try {
         const raw = localStorage.getItem(USED_DECK_STORAGE_KEY);
@@ -1010,9 +989,7 @@
       dealtHistory.push(chosen);
       try {
         localStorage.setItem(USED_DECK_STORAGE_KEY, JSON.stringify(dealtHistory));
-      } catch (e) {
-        // Ignore storage errors
-      }
+      } catch (e) {}
       return chosen;
     }
 
@@ -1041,8 +1018,10 @@
 
       const guestBox = document.getElementById("qrcode-guest-canvas");
       const hostBox = document.getElementById("qrcode-host-canvas");
+      const standaloneBox = document.getElementById("qrcode-standalone-canvas");
       if (guestBox) guestBox.innerHTML = "";
       if (hostBox) hostBox.innerHTML = "";
+      if (standaloneBox) standaloneBox.innerHTML = "";
 
       if (typeof QRCode !== "undefined") {
         if (guestBox) {
@@ -1065,12 +1044,48 @@
             correctLevel: QRCode.CorrectLevel.M
           });
         }
+        if (standaloneBox) {
+          new QRCode(standaloneBox, {
+            text: guestUrl,
+            width: 260,
+            height: 260,
+            colorDark: "#09090b",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
       }
 
       const testGuest = document.getElementById("test-guest-link");
       const testHost = document.getElementById("test-host-link");
       if (testGuest) testGuest.href = guestUrl;
       if (testHost) testHost.href = hostUrl;
+    }
+
+    function enableStandaloneQRDisplayMode() {
+      const header = document.getElementById("main-header");
+      const qrPanel = document.getElementById("qr-share-panel");
+      const guestContainer = document.getElementById("guest-mobile-container");
+      const standaloneView = document.getElementById("standalone-ipad-qr-view");
+
+      if (header) header.classList.add("hidden");
+      if (qrPanel) qrPanel.classList.add("hidden");
+      if (guestContainer) guestContainer.classList.add("hidden");
+      if (standaloneView) standaloneView.classList.remove("hidden");
+
+      renderDualQRCodes(document.getElementById("custom-qr-url")?.value || getCleanBaseUrl());
+    }
+
+    function exitStandaloneQRDisplayMode() {
+      const header = document.getElementById("main-header");
+      const qrPanel = document.getElementById("qr-share-panel");
+      const guestContainer = document.getElementById("guest-mobile-container");
+      const standaloneView = document.getElementById("standalone-ipad-qr-view");
+
+      if (header) header.classList.remove("hidden");
+      if (qrPanel) qrPanel.classList.remove("hidden");
+      if (guestContainer) guestContainer.classList.remove("hidden");
+      if (standaloneView) standaloneView.classList.add("hidden");
     }
 
     function updateQRCodeFromInput() {
@@ -1080,155 +1095,188 @@
       }
     }
 
-    function copyTextToClipboard(text, successMsg) {
-      const tempInput = document.createElement("input");
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      tempInput.setSelectionRange(0, 99999);
+    function copyTextFallback(text, successMsg) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
       try {
         document.execCommand("copy");
         showToast(successMsg);
-      } catch (err) {
-        showToast("Copy failed—please copy from the URL bar.");
+      } catch (e) {
+        showToast("Unable to copy link.");
       }
-      document.body.removeChild(tempInput);
+      document.body.removeChild(textarea);
     }
 
     function copyGuestLink() {
-      const base = document.getElementById("custom-qr-url").value.trim().split("?")[0];
-      copyTextToClipboard(`${base}?mode=guest`, "Guest Random-Card link copied!");
+      const base = (document.getElementById("custom-qr-url").value.trim() || getCleanBaseUrl()).split("?")[0].split("#")[0];
+      copyTextFallback(`${base}?mode=guest`, "Guest QR link copied!");
     }
 
     function copyHostLink() {
-      const base = document.getElementById("custom-qr-url").value.trim().split("?")[0];
-      copyTextToClipboard(`${base}?mode=host`, "Host Tracker link copied!");
+      const base = (document.getElementById("custom-qr-url").value.trim() || getCleanBaseUrl()).split("?")[0].split("#")[0];
+      copyTextFallback(`${base}?mode=host`, "Host QR link copied!");
     }
 
-    function selectMobileCard(cardNum) {
-      activeMobileCardNumber = cardNum;
+    function saveGuestState() {
+      const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
+      if (!card) return;
+      try {
+        localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify({
+          playerName: guestPlayerName,
+          cardNumber: activeMobileCardNumber,
+          marked: Array.from(card.marked)
+        }));
+      } catch (e) {}
+    }
+
+    function loadGuestState() {
+      try {
+        const raw = localStorage.getItem(GUEST_STORAGE_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.playerName && typeof parsed.cardNumber === "number") {
+          guestPlayerName = parsed.playerName;
+          activeMobileCardNumber = parsed.cardNumber;
+          const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
+          if (card && Array.isArray(parsed.marked)) {
+            card.marked = new Set(parsed.marked);
+            card.marked.add(12);
+          }
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    function selectMobileCard(cardNumber) {
+      activeMobileCardNumber = cardNumber;
       saveGuestState();
       renderMobileActiveCard();
     }
 
-    function assignRandomMobileCard(notify = false) {
-      const randomNum = pickDistinctCardNumber(activeMobileCardNumber);
-      const card = generatedCards.find(c => c.cardNumber === randomNum);
-      if (card) {
-        card.marked = new Set([12]);
-      }
-      selectMobileCard(randomNum);
-      if (notify) {
-        showToast(`Dealt Card #${String(randomNum).padStart(2, "0")} of ${TOTAL_CARDS}!`);
-      }
-    }
-
     function checkMobileCardBingo(card) {
       const winningLines = [
-        [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
-        [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
-        [0,6,12,18,24], [4,8,12,16,20]
+        [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24],
+        [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24],
+        [0, 6, 12, 18, 24], [4, 8, 12, 16, 20]
       ];
       return winningLines.some(line => line.every(idx => card.marked.has(idx)));
     }
 
     function renderMobileActiveCard() {
       const container = document.getElementById("mobile-active-card-container");
-      const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
-      if (!container || !card) return;
-
-      const hasBingo = checkMobileCardBingo(card);
-      const alertBanner = document.getElementById("mobile-bingo-alert");
+      const alertBox = document.getElementById("mobile-bingo-alert");
       const callBtn = document.getElementById("call-bingo-btn");
       const callBtnLabel = document.getElementById("call-bingo-btn-label");
+      if (!container) return;
 
-      if (hasBingo) {
-        alertBanner.classList.remove("hidden");
-        callBtn.className = "w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-amber-400 to-fuchsia-500 text-zinc-950 font-black text-base sm:text-lg tracking-wide transition-all shadow-[0_0_25px_rgba(251,191,36,0.5)] animate-pulse flex items-center justify-center gap-2 cursor-pointer";
-        callBtnLabel.textContent = `CALL BINGO! (CARD #${String(card.cardNumber).padStart(2, "0")})`;
-      } else {
-        alertBanner.classList.add("hidden");
-        callBtn.className = "w-full py-4 px-6 rounded-2xl bg-zinc-800 border-2 border-zinc-700 text-zinc-400 font-black text-sm sm:text-base tracking-wide transition-all flex items-center justify-center gap-2";
-        callBtnLabel.textContent = "Mark 5 in a Row to Unlock CALL BINGO!";
+      const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber) || generatedCards[0];
+      if (!card) return;
+
+      const accent = NEON_BAR_CLASSES[(card.cardNumber - 1) % NEON_BAR_CLASSES.length];
+      const hasBingo = checkMobileCardBingo(card);
+
+      if (alertBox) {
+        if (hasBingo) {
+          alertBox.classList.remove("hidden");
+        } else {
+          alertBox.classList.add("hidden");
+        }
       }
+
+      if (callBtn && callBtnLabel) {
+        if (hasBingo) {
+          callBtn.className = "w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-amber-400 to-fuchsia-500 text-zinc-950 font-black text-base sm:text-lg tracking-wide transition-all shadow-[0_0_30px_rgba(251,191,36,0.5)] flex items-center justify-center gap-2 animate-pulse cursor-pointer";
+          callBtnLabel.textContent = "CALL BINGO NOW!";
+        } else {
+          callBtn.className = "w-full py-4 px-6 rounded-2xl bg-zinc-800 border-2 border-zinc-700 text-zinc-400 font-black text-base sm:text-lg tracking-wide transition-all shadow-lg flex items-center justify-center gap-2";
+          callBtnLabel.textContent = "Mark 5 in a Row to Call BINGO!";
+        }
+      }
+
+      const headers = ["B", "I", "N", "G", "O"].map(letter => `
+        <div class="font-flyer-title text-xl sm:text-2xl text-center text-amber-400 py-1.5 border-b border-zinc-800">
+          ${letter}
+        </div>
+      `).join("");
 
       const cellsHtml = card.grid.map((cell, idx) => {
         const isMarked = card.marked.has(idx);
-        const displayNum = idx + 1;
-        const accent = NEON_BAR_CLASSES[idx % NEON_BAR_CLASSES.length];
-
         if (cell.isFree) {
           return `
-            <div class="min-h-[68px] sm:aspect-square p-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-400 via-fuchsia-500 to-purple-600 text-zinc-950 font-black relative overflow-hidden border border-zinc-600">
-              <span class="absolute top-0.5 left-1 text-[9px] font-black text-zinc-950/80">13.</span>
-              <span class="text-[8px] uppercase tracking-wider font-extrabold mt-2">FREE</span>
-              <span class="text-[10px] sm:text-xs font-flyer-title leading-tight mt-0.5">GOOD VIBES</span>
-              <div class="w-6 h-1 bg-zinc-950 -skew-x-12 mt-1"></div>
+            <div class="min-h-[68px] sm:min-h-[76px] p-1.5 rounded-xl bg-gradient-to-br from-amber-400 via-fuchsia-500 to-cyan-400 text-zinc-950 flex flex-col items-center justify-center text-center shadow-inner select-none">
+              <span class="text-[9px] font-black uppercase tracking-widest">FREE</span>
+              <span class="font-flyer-title text-[11px] sm:text-xs leading-tight mt-0.5">GOOD VIBES</span>
             </div>
           `;
         }
 
-        const interactiveClass = isMarked
-          ? "bg-fuchsia-950/85 border-amber-400 ring-2 ring-amber-400 text-white"
-          : "bg-zinc-950/90 active:scale-95 border-zinc-700/80 text-white";
-
+        const badgeColor = getEraBadgeStyle(cell.type);
         return `
           <button
             type="button"
             onclick="toggleCardSquare(${card.cardNumber}, ${idx})"
-            class="min-h-[68px] sm:aspect-square p-1 sm:p-1.5 border transition-all flex flex-col items-center justify-between text-center cursor-pointer select-none relative overflow-hidden ${interactiveClass}"
+            class="min-h-[68px] sm:min-h-[76px] p-1.5 rounded-xl border text-center flex flex-col items-center justify-center transition-all select-none break-words ${
+              isMarked
+                ? "bg-amber-400 border-amber-200 text-zinc-950 font-black shadow-md scale-[0.98]"
+                : "bg-zinc-900/90 border-zinc-800 text-zinc-100 hover:border-zinc-600"
+            }"
           >
-            <div class="w-full flex items-center justify-between">
-              <span class="text-[9px] sm:text-[10px] font-black ${accent.numColor}">${displayNum}.</span>
-              <span class="text-[8px] font-extrabold tracking-wider uppercase ${getEraBadgeStyle(cell.type)}">
-                ${cell.type === "PLAYLIST" ? "♫" : "💬"}
-              </span>
-            </div>
-
-            <span class="text-[9.5px] sm:text-[11px] font-extrabold leading-[1.15] break-words w-full my-auto px-0.5">
+            <span class="text-[8px] font-extrabold uppercase tracking-wider mb-0.5 ${isMarked ? "text-zinc-900" : badgeColor}">
+              ${cell.type === "PLAYLIST" ? "♫" : "💬"}
+            </span>
+            <span class="text-[10px] sm:text-xs font-bold leading-[1.15] break-words w-full">
               ${cell.title}
             </span>
-
-            <div class="w-6 h-1 ${accent.barBg} -skew-x-12 rounded-sm mt-0.5 shrink-0"></div>
-
-            ${isMarked ? `
-              <div class="absolute inset-0 bg-amber-400/25 pointer-events-none flex items-center justify-center">
-                <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-4 border-amber-400 shadow-lg"></span>
-              </div>
-            ` : ""}
           </button>
         `;
       }).join("");
 
       container.innerHTML = `
-        <div class="retro-flyer-bg border-2 border-zinc-700 rounded-2xl p-3 sm:p-4 shadow-2xl text-white">
-          <div class="text-center mb-3 pb-2 border-b border-zinc-700/80">
-            <div class="inline-block bg-zinc-100 text-zinc-950 font-black text-[10px] px-3 py-0.5 uppercase tracking-widest -rotate-1 mb-1">
-              CARD #${String(card.cardNumber).padStart(2, '0')} OF ${TOTAL_CARDS}
+        <div class="retro-flyer-bg border-2 border-zinc-800 rounded-3xl p-3.5 sm:p-5 shadow-2xl">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-widest text-fuchsia-400 block">90s–Current Culture</span>
+              <h3 class="font-flyer-title text-lg sm:text-xl text-white tracking-tight">PARTY-EARS BINGO</h3>
             </div>
-            <h4 class="font-flyer-title text-xl sm:text-2xl text-amber-400 leading-none">
-              Party-Ears Bingo
-            </h4>
-            <p class="text-[11px] text-zinc-300 mt-1">
-              Tap squares when you hear the <span class="text-cyan-300 font-bold">♫ Artist</span> or <span class="text-fuchsia-300 font-bold">💬 Phrase</span>!
-            </p>
+            <div class="text-right">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">Card</span>
+              <span class="font-flyer-title text-xl sm:text-2xl ${accent.numColor}">#${String(card.cardNumber).padStart(2, "0")}</span>
+            </div>
           </div>
-
-          <div class="grid grid-cols-5 border border-zinc-700 bg-zinc-950/60">
+          <div class="h-1.5 w-full rounded-full ${accent.barBg} mb-3"></div>
+          <div class="grid grid-cols-5 gap-1.5 mb-1.5">
+            ${headers}
+          </div>
+          <div class="grid grid-cols-5 gap-1.5">
             ${cellsHtml}
-          </div>
-
-          <div class="mt-3 pt-2 flex items-center justify-between text-xs text-zinc-400">
-            <span class="font-bold text-amber-400">${card.marked.size} / 25 Marked</span>
-            <button type="button" onclick="clearMobileCardMarks()" class="text-rose-400 hover:text-rose-300 font-semibold underline">
-              Clear Marks
-            </button>
           </div>
         </div>
       `;
     }
 
-    function triggerCallBingo() {
+    function getWinningLineName(card) {
+      const winningLines = [
+        { name: "Row 1 (Top)", indices: [0, 1, 2, 3, 4] },
+        { name: "Row 2", indices: [5, 6, 7, 8, 9] },
+        { name: "Row 3 (Middle)", indices: [10, 11, 12, 13, 14] },
+        { name: "Row 4", indices: [15, 16, 17, 18, 19] },
+        { name: "Row 5 (Bottom)", indices: [20, 21, 22, 23, 24] },
+        { name: "Column 1", indices: [0, 5, 10, 15, 20] },
+        { name: "Column 2", indices: [1, 6, 11, 16, 21] },
+        { name: "Column 3 (Middle)", indices: [2, 7, 12, 17, 22] },
+        { name: "Column 4", indices: [3, 8, 13, 18, 23] },
+        { name: "Column 5", indices: [4, 9, 14, 19, 24] },
+        { name: "Diagonal (TL-BR)", indices: [0, 6, 12, 18, 24] },
+        { name: "Diagonal (TR-BL)", indices: [4, 8, 12, 16, 20] }
+      ];
+      const found = winningLines.find(line => line.indices.every(idx => card.marked.has(idx)));
+      return found ? found.name : "5 in a Row";
+    }
+
+    async function triggerCallBingo() {
       const card = generatedCards.find(c => c.cardNumber === activeMobileCardNumber);
       if (!card) return;
       if (!checkMobileCardBingo(card)) {
@@ -1238,29 +1286,40 @@
 
       const playerName = guestPlayerName || "Guest Player";
       const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const winningLine = getWinningLineName(card);
       const callPayload = {
         id: `${Date.now()}-${card.cardNumber}`,
         playerName,
         cardNumber: card.cardNumber,
-        time: timeStr
+        winningLine,
+        time: timeStr,
+        createdAt: Date.now()
       };
 
-      // Broadcast & persist BINGO call so the Host Tracker receives an instant alert
+      // 1. Save to Cloud Sync if enabled (delivers straight from Guest phone to Host phone)
+      const cloud = window.__bingoCloud;
+      if (cloud && cloud.enabled && cloud.user && cloud.fs) {
+        try {
+          const { collection, addDoc } = cloud.fs;
+          const callsCol = collection(cloud.db, "artifacts", cloud.appId, "public", "data", "bingo_calls");
+          await addDoc(callsCol, callPayload);
+        } catch (err) {
+          console.warn("Cloud alert fallback to local:", err);
+        }
+      }
+
+      // 2. Also save locally & broadcast for same-device / offline use
       try {
         const existingRaw = localStorage.getItem(BINGO_CALLS_STORAGE_KEY);
         const existingCalls = existingRaw ? JSON.parse(existingRaw) : [];
         existingCalls.unshift(callPayload);
-        localStorage.setItem(BINGO_CALLS_STORAGE_KEY, JSON.stringify(existingCalls.slice(0, 20)));
-      } catch (e) {
-        // Ignore storage errors
-      }
+        localStorage.setItem(BINGO_CALLS_STORAGE_KEY, JSON.stringify(existingCalls.slice(0, 25)));
+      } catch (e) {}
 
       if (bingoBroadcastChannel) {
         try {
           bingoBroadcastChannel.postMessage({ type: "BINGO_CALLED", payload: callPayload });
-        } catch (e) {
-          // Ignore channel errors
-        }
+        } catch (e) {}
       }
 
       renderHostBingoAlerts();
@@ -1271,22 +1330,30 @@
       document.getElementById("guest-call-bingo-modal").classList.remove("hidden");
     }
 
+    let cloudBingoAlerts = [];
+
     function renderHostBingoAlerts(latestAlert = null) {
       const panel = document.getElementById("host-bingo-alerts-panel");
       const list = document.getElementById("host-bingo-alerts-list");
       if (!panel || !list) return;
 
-      let calls = [];
+      let localCalls = [];
       try {
         const raw = localStorage.getItem(BINGO_CALLS_STORAGE_KEY);
-        if (raw) calls = JSON.parse(raw);
+        if (raw) localCalls = JSON.parse(raw);
       } catch (e) {
-        calls = [];
+        localCalls = [];
       }
 
-      if (latestAlert && !calls.some(c => c.id === latestAlert.id)) {
-        calls.unshift(latestAlert);
+      const mergedMap = new Map();
+      [...cloudBingoAlerts, ...localCalls].forEach(c => {
+        if (c && c.id) mergedMap.set(c.id, c);
+      });
+      if (latestAlert && latestAlert.id) {
+        mergedMap.set(latestAlert.id, latestAlert);
       }
+
+      const calls = Array.from(mergedMap.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
       if (calls.length === 0) {
         panel.classList.add("hidden");
@@ -1301,7 +1368,9 @@
               BINGO! • ${call.time || "Just now"}
             </span>
             <div class="text-sm font-black text-white">${call.playerName}</div>
-            <div class="text-xs text-amber-300 font-bold">Card #${String(call.cardNumber).padStart(2, "0")}</div>
+            <div class="text-xs text-amber-300 font-bold">
+              Card #${String(call.cardNumber).padStart(2, "0")} ${call.winningLine ? `• ${call.winningLine}` : ""}
+            </div>
           </div>
           <button
             type="button"
@@ -1323,14 +1392,54 @@
       }
     }
 
-    function clearHostBingoAlerts() {
+    async function clearHostBingoAlerts() {
       try {
         localStorage.removeItem(BINGO_CALLS_STORAGE_KEY);
-      } catch (e) {
-        // Ignore storage errors
+      } catch (e) {}
+
+      const cloud = window.__bingoCloud;
+      if (cloud && cloud.enabled && cloud.user && cloud.fs) {
+        try {
+          const { collection, getDocs, deleteDoc, doc } = cloud.fs;
+          const callsCol = collection(cloud.db, "artifacts", cloud.appId, "public", "data", "bingo_calls");
+          const snap = await getDocs(callsCol);
+          const deletions = [];
+          snap.forEach(d => deletions.push(deleteDoc(doc(callsCol, d.id))));
+          await Promise.all(deletions);
+        } catch (err) {}
       }
+
+      cloudBingoAlerts = [];
       renderHostBingoAlerts();
     }
+
+    window.onCloudSyncReady = function () {
+      const cloud = window.__bingoCloud;
+      if (!cloud || !cloud.enabled || !cloud.user || !cloud.fs) return;
+      const { collection, onSnapshot } = cloud.fs;
+      const callsCol = collection(cloud.db, "artifacts", cloud.appId, "public", "data", "bingo_calls");
+
+      let initialSnapshotDone = false;
+      onSnapshot(
+        callsCol,
+        (snapshot) => {
+          const incoming = [];
+          snapshot.forEach(d => {
+            incoming.push({ docId: d.id, ...d.data() });
+          });
+          cloudBingoAlerts = incoming;
+          renderHostBingoAlerts();
+          if (initialSnapshotDone && incoming.length > 0) {
+            const newest = incoming.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))[0];
+            showToast(`🚨 BINGO! ${newest.playerName} (Card #${String(newest.cardNumber).padStart(2, "0")})!`);
+          }
+          initialSnapshotDone = true;
+        },
+        (error) => {
+          console.warn("Host Bingo listener error:", error);
+        }
+      );
+    };
 
     function closeCallBingoModal() {
       document.getElementById("guest-call-bingo-modal").classList.add("hidden");
@@ -1485,7 +1594,9 @@
       const params = new URLSearchParams(window.location.search);
       const mode = params.get("mode");
 
-      if (mode === "guest" || mode === "play") {
+      if (mode === "qr" || mode === "kiosk" || mode === "ipad") {
+        enableStandaloneQRDisplayMode();
+      } else if (mode === "guest" || mode === "play") {
         enablePureGuestMobileMode();
       } else if (mode === "host") {
         switchTab("caller");
